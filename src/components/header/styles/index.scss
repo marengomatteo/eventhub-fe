@@ -1,0 +1,136 @@
+header {
+  position: relative;
+  top: 0;
+  width: 100%;
+  height: 102px;
+  display: flex;
+  align-items: center;
+  gap:16px;
+  border-bottom: 1px solid #d0d0d0;
+  background-color: #fff;
+  padding: 0 25px;
+  z-index: 1000; 
+  & .header-logo {
+    height: 60px;
+    flex-shrink: 0; 
+  }
+  & .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50px;
+    padding: 8px 16px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto; 
+    
+    .search-input-wrapper {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      
+      .search-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        opacity: 0.6;
+      }
+      
+      .search-input {
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 15px;
+        padding: 4px;
+        color: #333;
+        
+        &::placeholder {
+          color: #999;
+        }
+        
+        &:focus {
+          & + .search-overlay {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+    
+    .search-separator {
+      width: 1px;
+      height: 24px;
+      background-color: #e0e0e0;
+      margin: 0 16px;
+    }
+
+  }
+  & .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    margin-left: auto;
+
+    & img {
+      transform: rotate(-90deg);
+      width: 12px;
+    }
+  }
+
+  & .profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; 
+    img {
+      width: 30px;
+    }
+    & .profile-container {
+      display: flex;
+      align-items: center;
+      color: #1e293b;
+      font-size: 16px;
+      font-weight: 400;
+      gap: 16px;
+      & img {
+        width: 16px;
+      }
+      & .profile-logo {
+        width: 50px;
+        height: 50px;
+        background-color: rgba($color: #eb5d24, $alpha: 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #eb5d24;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 24px;
+      }
+    }
+  }
+
+}
+
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(132, 129, 129, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 999; 
+}
+
+
+:root:has(.header .search-container .search-input:focus) .search-overlay {
+  opacity: 1;
+  visibility: visible;
+}

@@ -1,0 +1,68 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* INPUT */
+.input-text {
+  width: 100%;
+  & input {
+    width: 100%;
+    border-radius: 30px;
+  }
+}
+
+/* CAROUSEL */
+.carousel-container {
+  .products-carousel {
+    .mantine-Carousel-container {
+      padding-bottom: 8px;
+    }
+
+    .carousel-slide {
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      img {
+        width: auto;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+  }
+}

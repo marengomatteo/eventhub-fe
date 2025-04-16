@@ -1,0 +1,131 @@
+.login {
+  height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eb5d2433;
+
+  & .left {
+    display: none;
+  }
+
+  & .right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    background-color: #fff;
+    height: fit-content;
+    margin: 0 38px;
+
+    & h1 {
+      font-size: 24px;
+      font-weight: 500;
+      text-align: center;
+      margin: 40px 0;
+      max-width: 300px;
+    }
+
+    & .login-form {
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 20px;
+
+      & .input-text {
+        width: 100%;
+      }
+    }
+
+    & .forgotPassword {
+      align-self: end;
+      font-size: 14px;
+      font-weight: 400;
+      max-width: 320px;
+      text-align: end;
+      margin: 16px 0 32px;
+      color: #667;
+      &::after {
+        background-color: #667;
+      }
+    }
+
+    & .login-button {
+      width: 186px;
+      max-width: 320px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    & .register-button {
+      margin-top: 40px;
+    }
+  }
+
+  @media (min-width: 640px) {
+    & .right {
+      padding: 32px;
+
+      & h1 {
+        font-size: 28px;
+        max-width: 400px;
+      }
+      & .forgotPassword {
+        margin-right: 44px;
+      }
+    }
+  }
+
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #fff;
+    & .left {
+      display: flex; // Mostra il logo
+      align-items: center;
+      justify-content: center;
+      background: #eb5d2433;
+      height: 100dvh;
+
+      & img {
+        width: 250px;
+      }
+    }
+
+    & .right {
+      justify-content: center;
+      padding: 80px;
+      height: 100dvh;
+      max-width: 500px;
+      & h1 {
+        font-size: 40px;
+        margin-bottom: 40px;
+        max-width: 500px;
+      }
+
+      & .login-form {
+        max-width: 450px;
+        gap: 32px;
+      }
+
+      & .forgotPassword {
+        max-width: 450px;
+        margin-right: 0;
+        justify-content: end;
+      }
+
+      & .login-button {
+        width: 290px;
+        margin-top: 65px;
+      }
+      & .register-button {
+        margin-top: 40px;
+      }
+    }
+  }
+}
