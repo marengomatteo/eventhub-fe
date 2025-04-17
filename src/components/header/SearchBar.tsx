@@ -43,20 +43,23 @@ const SearchBar = () => {
         lng: 7.742615,
       });
     };
-  const formSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const formSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      const { eventName } = form.getValues();
+      e.preventDefault();
 
-    const { eventName } = form.getValues();
-    const location = selectedLocation?.city;
+      const location = selectedLocation?.city;
 
-    router.navigate({
-      to: "/events",
-      search: {
-        location: location?.trim() !== "" ? location : undefined,
-        name: eventName.trim() !== "" ? eventName.trim() : undefined,
-      },
-    });
-  };
+      router.navigate({
+        to: "/events",
+        search: {
+          location: location?.trim() !== "" ? location : undefined,
+          name: eventName.trim() !== "" ? eventName.trim() : undefined,
+        },
+      });
+    },
+    [form, selectedLocation]
+  );
 
   return (
     <form onSubmit={formSubmit} className="search-container">
@@ -83,7 +86,16 @@ const SearchBar = () => {
           />
         </LocationSearch>
       </div>
-      <button className="hidden" type="submit"></button>
+      <button
+        className="search-button"
+        type="submit"
+        disabled={
+          !form.getValues().eventName.trim() &&
+          !form.getValues().eventLocation.trim()
+        }
+      >
+        <img src={searchIcon} />
+      </button>
     </form>
   );
 };

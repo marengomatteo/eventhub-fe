@@ -5,14 +5,14 @@ header {
   height: 102px;
   display: flex;
   align-items: center;
-  gap:16px;
+  gap: 16px;
   border-bottom: 1px solid #d0d0d0;
   background-color: #fff;
   padding: 0 25px;
-  z-index: 1000; 
+  z-index: 1000;
   & .header-logo {
     height: 60px;
-    flex-shrink: 0; 
+    flex-shrink: 0;
   }
   & .search-container {
     position: relative;
@@ -24,20 +24,20 @@ header {
     padding: 8px 16px;
     max-width: 600px;
     width: 100%;
-    margin: 0 auto; 
-    
+    margin: 0 auto;
+
     .search-input-wrapper {
       display: flex;
       align-items: center;
       flex: 1;
-      
+
       .search-icon {
         width: 20px;
         height: 20px;
         margin-right: 8px;
         opacity: 0.6;
       }
-      
+
       .search-input {
         border: none;
         outline: none;
@@ -46,11 +46,11 @@ header {
         padding: 4px;
         color: #333;
         background: transparent;
-        
+
         &::placeholder {
           color: #999;
         }
-        
+
         &:focus {
           & + .search-overlay {
             opacity: 1;
@@ -59,14 +59,13 @@ header {
         }
       }
     }
-    
+
     .search-separator {
       width: 1px;
       height: 24px;
       background-color: #e0e0e0;
       margin: 0 16px;
     }
-
   }
   & .breadcrumb {
     display: flex;
@@ -85,7 +84,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; 
+    flex-shrink: 0;
     img {
       width: 30px;
     }
@@ -114,7 +113,6 @@ header {
       }
     }
   }
-
 }
 
 .search-overlay {
@@ -127,9 +125,8 @@ header {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 999; 
+  z-index: 999;
 }
-
 
 :root:has(.header .search-container .search-input:focus) .search-overlay {
   opacity: 1;
@@ -142,29 +139,43 @@ header {
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-family: inherit;
-  
+
   .pac-item {
     padding: 8px 16px;
     font-size: 14px;
     color: #333;
     cursor: pointer;
-    
+
     &:hover {
       background-color: #f5f5f5;
     }
-    
+
     .pac-icon {
       display: none;
     }
-    
+
     .pac-item-query {
       font-size: 14px;
       color: #333;
     }
-    
+
     .pac-matched {
       font-weight: 600;
       color: #eb5d24;
     }
+  }
+}
+
+.search-button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background: #eb5d24;
+  margin-right: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & img {
+    filter: invert(1);
   }
 }

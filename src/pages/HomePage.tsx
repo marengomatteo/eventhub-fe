@@ -2,10 +2,15 @@ import Header from "@components/header/Header";
 import { Carousel } from "@mantine/carousel";
 import "./styles/homepage.scss";
 import Filters from "@components/filters/Filters";
-import { filters, products } from "@mocks/data";
+import data from "@mocks/data";
+import EventsSection from "@components/eventsSection/EventsSection";
+import Footer from "@components/footer/Footer";
 
 const HomePage = () => {
-  console.log(products);
+  const products = data.products;
+  const filters = data.filters;
+  const highlightEvents = data.highlightEvents;
+  console.log(products.length);
   return (
     <>
       <Header showSearchBar={true} />
@@ -24,17 +29,26 @@ const HomePage = () => {
             loop
             className="products-carousel"
           >
-            {products.splice(1).map((product, index) => (
-              <Carousel.Slide key={index}>
-                <div className="carousel-slide">
-                  <img src={product.image} alt={`Product ${index + 1}`} />
-                </div>
-              </Carousel.Slide>
-            ))}
+            {products.map((product, index) => {
+              if (index != 0) {
+                return (
+                  <Carousel.Slide key={index}>
+                    <div className="carousel-slide">
+                      <img src={product.image} alt={`Product ${index + 1}`} />
+                    </div>
+                  </Carousel.Slide>
+                );
+              }
+            })}
           </Carousel>
         </div>
       )}
       <Filters filters={filters} />
+      <EventsSection
+        title="Eventi in evidenza"
+        highlightEvents={highlightEvents}
+      />
+      <Footer />
     </>
   );
 };

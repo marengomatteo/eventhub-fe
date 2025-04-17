@@ -1,7 +1,7 @@
 import mic from "@icons/mic.svg";
 import disco from "@icons/disco.svg";
 
-export const products = [
+const products = [
   {
     image: "https://picsum.photos/800/300",
   },
@@ -25,7 +25,7 @@ export const products = [
   },
 ];
 
-export const filters = [
+const filters = [
   {
     name: "prova",
     icon: mic,
@@ -55,3 +55,43 @@ export const filters = [
     icon: mic,
   },
 ];
+const highlightEvents = [
+  {
+    name: "prova",
+    image: "https://picsum.photos/300/200",
+    date: "13 Mag, 2025",
+    location: "Inalpi Arena - Torino",
+  },
+  {
+    name: "prova",
+    image: "https://picsum.photos/300/200",
+    date: "13 Mag, 2025",
+    location: "Inalpi Arena - Torino",
+  },
+  {
+    name: "prova",
+    image: "https://picsum.photos/300/200",
+    date: "13 Mag, 2025",
+    location: "Inalpi Arena - Torino",
+  },
+  {
+    name: "prova",
+    image: "https://picsum.photos/300/200",
+    date: "13 Mag, 2025",
+    location: "Inalpi Arena - Torino",
+  },
+  {
+    name: "prova",
+    image: "https://picsum.photos/300/200",
+    date: "13 Mag, 2025",
+    location: "Inalpi Arena - Torino",
+  },
+  {
+    name: "prova",
+    image: "https://picsum.photos/300/200",
+    date: "13 Mag, 2025",
+    location: "Inalpi Arena - Torino",
+  },
+];
+
+export default { filters, products, highlightEvents };
