@@ -1,0 +1,27 @@
+.filters-wrapper {
+  margin-top: 60px;
+  & .filter {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 20px;
+    & .filter-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px solid #d0d0d0;
+
+      & img {
+        width: 86px;
+        height: 86px;
+      }
+    }
+    & span {
+      margin-top: 16px;
+    }
+  }
+}

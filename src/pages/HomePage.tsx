@@ -1,31 +1,11 @@
 import Header from "@components/header/Header";
 import { Carousel } from "@mantine/carousel";
 import "./styles/homepage.scss";
+import Filters from "@components/filters/Filters";
+import { filters, products } from "@mocks/data";
 
 const HomePage = () => {
-  const products = [
-    {
-      image: "https://picsum.photos/800/300",
-    },
-    {
-      image: "https://picsum.photos/400/300",
-    },
-    {
-      image: "https://picsum.photos/200/500",
-    },
-    {
-      image: "https://picsum.photos/600/300",
-    },
-    {
-      image: "https://picsum.photos/450/300",
-    },
-    {
-      image: "https://picsum.photos/550/300",
-    },
-    {
-      image: "https://picsum.photos/480/300",
-    },
-  ];
+  console.log(products);
   return (
     <>
       <Header showSearchBar={true} />
@@ -54,6 +34,7 @@ const HomePage = () => {
           </Carousel>
         </div>
       )}
+      <Filters filters={filters} />
     </>
   );
 };

@@ -12,8 +12,10 @@
   "dependencies": {
     "@mantine/carousel": "^7.17.4",
     "@mantine/core": "^7.17.4",
+    "@mantine/form": "^7.17.4",
     "@mantine/hooks": "^7.17.4",
     "@mantine/notifications": "^7.17.4",
+    "@react-google-maps/api": "^2.20.6",
     "@tanstack/react-router": "^1.116.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

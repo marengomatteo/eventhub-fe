@@ -24,6 +24,7 @@
     "baseUrl": "./src",
     "paths": {
       "@assets/*": ["assets/*"],
+      "@mocks/*": ["mocks/*"],
       "@icons/*": ["icons/*"],
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"]
