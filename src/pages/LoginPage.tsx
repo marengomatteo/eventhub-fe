@@ -1,13 +1,55 @@
+import google from "@assets/google-login.png";
 import logoExpanded from "@assets/logo-expanded.png";
-
-import "../styles/login.scss";
-import { useState } from "react";
-import Button from "../components/common/button/Button";
 import CustomInput from "@components/common/input/CustomInput";
+import { useForm } from "@mantine/form";
+import Button from "../components/common/button/Button";
+import "../styles/login.scss";
+import { useGoogleLogin } from "@react-oauth/google";
+
+interface FormValues {
+  username: string;
+  password: string;
+}
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
+  const form = useForm<FormValues>({
+    mode: "uncontrolled",
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    onValuesChange: (values) => {
+      console.log(values);
+    },
+    validate: {
+      username: (value) => {
+        if (!value) {
+          return "Username is required";
+        } if (!value.match("/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim")) {
+          return "Username non valida";
+        }
+        return null;
+      },
+      password: (value) => {
+        if (!value) {
+          return "Password is required";
+        }
+        return null;
+      },
+    }
+  });
+
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+
+      console.log(response);
+    },
+    flow: 'auth-code',
+  });
+
+
+
   return (
     <div className="login">
       <div className="left">
@@ -17,28 +59,39 @@ const LoginPage = () => {
         <h1>Accedi per scoprire un mondo di eventi!</h1>
         <form className="login-form">
           <CustomInput
-            value={username}
-            setValue={setUsername}
+            value={form.getValues().username}
+            key={form.key("username")}
+            setValue={(value: string) => form.setFieldValue("username", value)}
             label={"Username"}
+            {...form.getInputProps("username")}
           />
           <CustomInput
+            value={form.getValues().password}
             type="password"
-            value={password}
-            setValue={setPassword}
+            key={form.key("password")}
+            setValue={(value: string) => form.setFieldValue("password", value)}
+            {...form.getInputProps("password")}
             label={"Passsword"}
           />
         </form>
         <Button
           className="forgotPassword"
-          type="tertiary"
+          variant="tertiary"
           label="Password dimenticata?"
         />
-        <Button className="login-button" label="Accedi" />
+        <Button className="login-button" type="submit" label="Accedi" />
         <Button
           className="register-button"
-          type="tertiary"
-          label="Oppure registrati"
+          variant="tertiary"
+          label="o registrati"
         />
+        <div className="login-separator">Oppure accedi con</div>
+        <div className="login-social-buttons">
+          <button className="social-login-button" onClick={() => login()} >
+            <img src={google} />
+          </button>
+
+        </div>
       </div>
     </div>
   );

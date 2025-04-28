@@ -3,13 +3,15 @@ import {
   createRoute,
   createRouter,
   Outlet,
+  redirect,
 } from "@tanstack/react-router";
 
-import { UserProvider } from "../context/UserContext";
+import { UserProvider, useUser } from "../context/UserContext";
 
 import HomePage from "@pages/HomePage";
 import LoginPage from "@pages/LoginPage";
 import SearchResultsPage from "@pages/SearchResultsPages";
+import ProfilePage from "@pages/ProfilePage";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -30,9 +32,15 @@ const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   component: LoginPage,
   /*   beforeLoad: () => {
-    const { user } = useUser();
-    if (user != null) throw redirect({ to: "/dashboard" });
-  }, */
+      const { user } = useUser();
+      if (user != null) throw redirect({ to: "/profile" });
+    }, */
+});
+
+const profileRoute = createRoute({
+  path: "/profile",
+  getParentRoute: () => rootRoute,
+  component: ProfilePage,
 });
 const searchResultsRoute = createRoute({
   path: "/events",
@@ -70,6 +78,7 @@ const dashboardRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
+  profileRoute,
   searchResultsRoute,
   //dashboardRoute,
 ]);

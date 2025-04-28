@@ -4,7 +4,8 @@ import { ButtonProps } from "./types";
 import "./styles/index.scss";
 
 const Button: FC<ButtonProps> = ({
-  type = "primary",
+  variant = "primary",
+  type,
   label,
   onClick,
   isLoading = false,
@@ -13,11 +14,11 @@ const Button: FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`button button-${type} ${
-        isLoading ? "loading" : ""
-      } ${className}`}
+      className={`button button-${variant} ${isLoading ? "loading" : ""
+        } ${className}`}
       disabled={disabled || isLoading}
       onClick={onClick}
+      type={type}
     >
       {isLoading ? (
         <div className="spinner">

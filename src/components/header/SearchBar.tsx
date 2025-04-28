@@ -1,10 +1,10 @@
-import { isNotEmpty, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { useCallback, useState } from "react";
 
 import searchIcon from "@icons/search.svg";
 import locationIcon from "@icons/location.svg";
 import LocationSearch from "./LocationSearch";
-import { Button, TextInput } from "@mantine/core";
+import {  TextInput } from "@mantine/core";
 import { useRouter } from "@tanstack/react-router";
 
 interface FormValues {

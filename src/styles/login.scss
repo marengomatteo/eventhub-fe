@@ -23,7 +23,7 @@
       font-size: 24px;
       font-weight: 500;
       text-align: center;
-      margin: 40px 0;
+      margin: 40px 0 0;
       max-width: 300px;
     }
 
@@ -46,7 +46,7 @@
       font-weight: 400;
       max-width: 320px;
       text-align: end;
-      margin: 16px 0 32px;
+      margin: 16px 0;
       color: #667;
       &::after {
         background-color: #667;
@@ -63,14 +63,50 @@
       margin-top: 20px;
     }
     & .register-button {
-      margin-top: 40px;
+      margin-top: 8px;
     }
+    & .login-separator {
+      margin-top: 24px;
+      font-size: 14px;
+      font-weight: 300;
+      position: relative;
+      &::after,
+      &::before {
+        content: "";
+        width: 1px;
+        height: 16px;
+        background-color: #d0d0d0;
+        display: inline-block;
+        top: 50%;
+        position: absolute;
+        transform: translateY(-50%) rotate(90deg);
+      }
+      &::before{
+        left: -20px;
+      }
+      &::after{
+        right: -20px;
+      }
+    }
+    & .login-social-buttons {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      & .social-login-button{
+        background-color: transparent;
+        & img{
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+      }
+    }
+
   }
 
   @media (min-width: 640px) {
     & .right {
       padding: 32px;
-
       & h1 {
         font-size: 28px;
         max-width: 400px;
@@ -101,7 +137,6 @@
       justify-content: center;
       padding: 80px;
       height: 100dvh;
-      max-width: 500px;
       & h1 {
         font-size: 40px;
         margin-bottom: 40px;
