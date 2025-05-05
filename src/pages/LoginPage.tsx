@@ -73,18 +73,12 @@ const LoginPage = () => {
             {...form.getInputProps("password")}
             label={"Passsword"}
           />
+          <Button
+            className="forgotPassword"
+            variant="tertiary"
+            label="Password dimenticata?"
+          />
         </form>
-        <Button
-          className="forgotPassword"
-          variant="tertiary"
-          label="Password dimenticata?"
-        />
-        <Button className="login-button" type="submit" label="Accedi" />
-        <Button
-          className="register-button"
-          variant="tertiary"
-          label="o registrati"
-        />
         <div className="login-separator">Oppure accedi con</div>
         <div className="login-social-buttons">
           <button className="social-login-button" onClick={() => login()} >
@@ -92,6 +86,12 @@ const LoginPage = () => {
           </button>
 
         </div>
+        <Button className="login-button" type="submit" label="Accedi" />
+        <Button
+          className="register-button"
+          variant="tertiary"
+          label="o registrati"
+        />
       </div>
     </div>
   );

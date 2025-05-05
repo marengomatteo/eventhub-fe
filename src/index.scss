@@ -2,6 +2,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  height: 100%;
 }
 
 a {
@@ -16,6 +17,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  height: 100%;
 }
 
 h1 {
@@ -26,6 +28,7 @@ h1 {
 button {
   border-radius: 8px;
   border: none;
+  background-color: transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -36,7 +39,16 @@ button {
 * {
   box-sizing: border-box;
 }
-
+/* BACK BUTTON */
+.back-button{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  & img{
+    transform: rotate(90deg);
+  }
+}
 /* INPUT */
 .input-text {
   width: 100%;

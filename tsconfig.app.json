@@ -27,6 +27,7 @@
       "@mocks/*": ["mocks/*"],
       "@icons/*": ["icons/*"],
       "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
       "@pages/*": ["pages/*"]
     }
   },

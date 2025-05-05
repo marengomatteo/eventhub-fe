@@ -46,7 +46,7 @@
       font-weight: 400;
       max-width: 320px;
       text-align: end;
-      margin: 16px 0;
+      margin: 0;
       color: #667;
       &::after {
         background-color: #667;
@@ -111,9 +111,7 @@
         font-size: 28px;
         max-width: 400px;
       }
-      & .forgotPassword {
-        margin-right: 44px;
-      }
+
     }
   }
 
@@ -138,8 +136,8 @@
       padding: 80px;
       height: 100dvh;
       & h1 {
-        font-size: 40px;
-        margin-bottom: 40px;
+        font-size: 32px;
+        margin-bottom: 20px;
         max-width: 500px;
       }
 
@@ -152,14 +150,15 @@
         max-width: 450px;
         margin-right: 0;
         justify-content: end;
+        max-width: 450px;
       }
 
       & .login-button {
         width: 290px;
-        margin-top: 65px;
+        margin-top: 20px;
       }
       & .register-button {
-        margin-top: 40px;
+        margin-top: 16px;
       }
     }
   }

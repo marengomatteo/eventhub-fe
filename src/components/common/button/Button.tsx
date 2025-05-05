@@ -5,7 +5,7 @@ import "./styles/index.scss";
 
 const Button: FC<ButtonProps> = ({
   variant = "primary",
-  type,
+  type = "button",
   label,
   onClick,
   isLoading = false,

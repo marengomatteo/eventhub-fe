@@ -5,6 +5,7 @@ export interface User {
   name: string;
   surname: string;
   email: string;
+  role: "admin" | "user";
 }
 interface UserContextType {
   user: User | null;
@@ -34,3 +35,8 @@ export const useUser = (): UserContextType => {
   }
   return context;
 };
+
+export const isUserAdmin = () => {
+  const { user } = useUser();
+  return user?.role === "admin";
+}

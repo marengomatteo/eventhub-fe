@@ -53,6 +53,7 @@ header {
 
         &:focus {
           & + .search-overlay {
+            display: block;
             opacity: 1;
             visibility: visible;
           }
@@ -116,6 +117,7 @@ header {
 }
 
 .search-overlay {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -129,6 +131,7 @@ header {
 }
 
 :root:has(.header .search-container .search-input:focus) .search-overlay {
+  display: block;
   opacity: 1;
   visibility: visible;
 }

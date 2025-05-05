@@ -11,6 +11,7 @@ export default defineConfig({
       "@mocks": path.resolve(__dirname, "./src/mocks"),
       "@icons": path.resolve(__dirname, "./src/assets/icons"),
       "@components": path.resolve(__dirname, "./src/components"),
+      "@context": path.resolve(__dirname, "./src/context"),
       "@pages": path.resolve(__dirname, "./src/pages"),
     },
   },

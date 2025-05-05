@@ -10,7 +10,7 @@ import "./styles/index.scss";
 import { Link } from "@tanstack/react-router";
 import SearchBar from "./SearchBar";
 
-const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb }) => {
+const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb, showProfileIcon = true }) => {
   const { user, setUser } = useUser();
 
   return (
@@ -31,7 +31,7 @@ const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb }) => {
             ))}
           </div>
         )}
-        <div className="profile">
+        {showProfileIcon && <div className="profile">
           {user ? (
             <div className="profile-container">
               <div className="profile-logo">
@@ -45,7 +45,7 @@ const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb }) => {
               <img src={profile} />
             </Link>
           )}
-        </div>
+        </div>}
       </header>
       <div className="search-overlay"></div>
     </>
