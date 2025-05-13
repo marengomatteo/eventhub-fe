@@ -53,4 +53,11 @@
     & .ticket-preview{
         padding: 0 24px;
     }
+    & .content{
+        width: 100%;
+        padding: 24px 80px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
 }

@@ -3,10 +3,12 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-import "./index.scss";
-import "./variables.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import '@mantine/dropzone/styles.css';
+
+import "./index.scss";
+import "./variables.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

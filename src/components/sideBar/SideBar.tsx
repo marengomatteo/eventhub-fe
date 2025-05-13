@@ -18,7 +18,8 @@ const items = [{
     icon: profile,
     id: "profile",
     ref: "/profile"
-}]
+}
+]
 
 const SideBar: FC<{ showExpanded?: boolean, children: ReactNode }> = ({ showExpanded = false, children }) => {
     const pathname = useRouterState({ select: (s) => s.location.pathname });
