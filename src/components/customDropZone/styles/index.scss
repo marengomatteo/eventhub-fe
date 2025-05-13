@@ -65,3 +65,44 @@
  }   
 
 }
+
+.files-carousel {
+  max-width: 100%;
+  overflow: hidden;
+
+  .mantine-Carousel-slide {
+    width: fit-content;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img, video {
+      max-height: 200px;
+      max-width: 100%;
+      height: 100%;
+      width: auto;
+      display: block;
+      object-fit: cover;
+    }
+  }
+}
+.item{
+    border:1px solid #D0D0D0;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    .button-add{
+        align-self: end;
+        background-color: #D9D9D923;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        min-width: 0;
+        min-height: 0;
+    }
+}

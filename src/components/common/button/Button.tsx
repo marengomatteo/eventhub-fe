@@ -10,6 +10,7 @@ const Button: FC<ButtonProps> = ({
   onClick,
   isLoading = false,
   disabled = false,
+  icon,
   className,
 }) => {
   return (
@@ -29,6 +30,7 @@ const Button: FC<ButtonProps> = ({
       ) : (
         label
       )}
+      {icon && <img src={icon} />}
     </button>
   );
 };

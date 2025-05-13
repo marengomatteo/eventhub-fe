@@ -1,24 +1,72 @@
+import { useRef, useState } from 'react';
+import { Carousel } from '@mantine/carousel';
 import { Group, Text } from '@mantine/core';
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { Dropzone, DropzoneProps } from '@mantine/dropzone';
 
 import uploadIcon from "@icons/upload.svg"
 import errorIcon from "@icons/error.svg"
 import photoIcon from "@icons/photo.svg"
+import addIcon from "@icons/add.svg"
+import Button from '@components/common/button/Button';
 
 import "./styles/index.scss"
-import { useState } from 'react';
 
 const CustomDropZone = (props: Partial<DropzoneProps>) => {
     const [files, setFiles] = useState<File[]>([]);
+    const inputRef = useRef<HTMLInputElement>(null);
 
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newFiles = event.target.files ? Array.from(event.target.files) : [];
+        setFiles(prev => [...prev, ...newFiles]);
+    };
+
+    const openFileDialog = () => {
+        inputRef.current?.click();
+    };
     return (
-        files.length > 0 ? <div>{files.map((file) => <p>{file.name}</p>)}</div> :
+        files.length > 0 ?
+            <div className='item'>
+                <Button className='button-add' icon={addIcon} onClick={openFileDialog} />
+                <input
+                    type="file"
+                    accept="image/*,video/*"
+                    multiple
+                    hidden
+                    ref={inputRef}
+                    onChange={handleInputChange}
+                />
+                <Carousel
+                    withIndicators
+                    height={200}
+                    slideSize="auto"
+                    emblaOptions={{ dragFree: true, align: 'start' }}
+                    slideGap="0"
+                    className='files-carousel'
+                >
+                    {files.map((file, index) => {
+                        const url = URL.createObjectURL(file);
+                        const isImage = file.type.startsWith('image');
+                        const isVideo = file.type.startsWith('video');
+
+                        return <Carousel.Slide key={index}>
+                            {isImage && <img src={url} alt={file.name} />}
+                            {isVideo && (
+                                <video controls autoPlay>
+                                    <source src={url} type={file.type} />
+                                    Il tuo browser non supporta il video.
+                                </video>
+                            )}
+                        </Carousel.Slide>
+                    })}
+                </Carousel >
+            </div>
+            :
             <Dropzone
                 className='dropzone'
                 onDrop={(files) => setFiles(files)}
                 onReject={(files) => console.log('rejected files', files)}
                 maxSize={5 * 1024 ** 2}
-                accept={IMAGE_MIME_TYPE}
+                accept={['image/*', 'video/*']}
                 {...props}
             >
                 <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
