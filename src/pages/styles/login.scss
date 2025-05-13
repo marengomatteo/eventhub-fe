@@ -4,8 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #eb5d2433;
-
+  background-color: rgba($color: var(--accent-orange-rgb), $alpha: 0.33) ;
+  & .mantine-InputWrapper-error{
+  position: absolute;
+  }
   & .left {
     display: none;
   }
@@ -123,7 +125,7 @@
       display: flex; // Mostra il logo
       align-items: center;
       justify-content: center;
-      background: #eb5d2433;
+      background-color: rgba($color: var(--accent-orange-rgb), $alpha: 0.33) ;
       height: 100dvh;
 
       & img {
@@ -143,7 +145,7 @@
 
       & .login-form {
         max-width: 450px;
-        gap: 32px;
+        gap: 24px;      
       }
 
       & .forgotPassword {

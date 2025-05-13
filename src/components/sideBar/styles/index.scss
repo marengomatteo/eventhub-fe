@@ -20,20 +20,20 @@
         transition: all 0.3s ease-in-out;
         &.selected{
 
-            background-color: #EB5D24;
+            background-color: var(--accent-orange);
             & img{
                 filter: invert(1) brightness(2);
             }
         }
     }
     }
-& .sidebar-expanded{
-    transform: translateX(-100%);
-    width: 320px;
-    height: 100%;
-    background: rgba(217, 217, 217, 0.15);
-    animation: slideInFromLeft 0.5s ease-out 1s forwards;
-}
+    & .sidebar-expanded{
+        transform: translateX(-100%);
+        width: 320px;
+        height: 100%;
+        background: rgba(217, 217, 217, 0.15);
+        animation: slideInFromLeft 0.5s ease-out 1s forwards;
+    }
 }
 
 @keyframes slideInFromLeft {

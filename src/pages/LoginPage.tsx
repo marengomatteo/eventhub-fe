@@ -3,8 +3,9 @@ import logoExpanded from "@assets/logo-expanded.png";
 import CustomInput from "@components/common/input/CustomInput";
 import { useForm } from "@mantine/form";
 import Button from "../components/common/button/Button";
-import "../styles/login.scss";
+import "./styles/login.scss";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useRouter } from "@tanstack/react-router";
 
 interface FormValues {
   username: string;
@@ -12,6 +13,7 @@ interface FormValues {
 }
 
 const LoginPage = () => {
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     mode: "uncontrolled",
@@ -48,7 +50,7 @@ const LoginPage = () => {
     flow: 'auth-code',
   });
 
-
+  const navigate = (to: string) => router.navigate({ to });
 
   return (
     <div className="login">
@@ -88,6 +90,7 @@ const LoginPage = () => {
         </div>
         <Button className="login-button" type="submit" label="Accedi" />
         <Button
+          onClick={async () => await navigate("/register")}
           className="register-button"
           variant="tertiary"
           label="o registrati"

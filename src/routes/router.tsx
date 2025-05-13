@@ -13,6 +13,7 @@ import LoginPage from "@pages/LoginPage";
 import SearchResultsPage from "@pages/SearchResultsPages";
 import ProfilePage from "@pages/ProfilePage";
 import CreateEventPage from "@pages/CreateEventPage";
+import RegisterPage from "@pages/RegisterPage";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -38,6 +39,11 @@ const loginRoute = createRoute({
     }, */
 });
 
+const registerRoute = createRoute({
+  path: "/register",
+  getParentRoute: () => rootRoute,
+  component: RegisterPage,
+});
 const profileRoute = createRoute({
   path: "/profile",
   getParentRoute: () => rootRoute,
@@ -88,6 +94,7 @@ const routeTree = rootRoute.addChildren([
   profileRoute,
   createEventRoute,
   searchResultsRoute,
+  registerRoute,
   //dashboardRoute,
 ]);
 

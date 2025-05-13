@@ -7,7 +7,7 @@
     min-height: 50px;
     max-width: 450px;
     border-radius: 7px;
-    background-color: #eb5d24;
+    background-color: var(--accent-orange);
     color: #fff;
     font-size: 18px;
     font-weight: 400;
@@ -27,7 +27,7 @@
   }
 
   &-tertiary {
-    color: #eb5d24;
+    color: var(--accent-orange);
     text-underline-offset: 4px;
     background-color: transparent;
     padding: 0;
@@ -41,7 +41,7 @@
       height: 2px;
       bottom: -4px;
       left: 0;
-      background-color: #eb5d24;
+      background-color: var(--accent-orange);
       transform-origin: bottom right;
       transition: transform 0.25s ease-out;
     }

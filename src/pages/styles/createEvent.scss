@@ -2,7 +2,7 @@
     display: flex;
     height: 100%;
 
-    .timeline{
+    & .timeline{
         display: flex;
         flex-direction: column;
         & .timeline-item{
@@ -25,7 +25,7 @@
                     font-weight: 500;
                 }
                 &:before{
-                    border-color: #EB5D24;
+                    border-color: var(--accent-orange);
                 }
                 &:after{
                     content:"";
@@ -33,7 +33,7 @@
                     width: 10px;
                     height: 10px;
                     border-radius: 3px;
-                    background:  #EB5D24;
+                    background:  var(--accent-orange);
                     left: 17px;
                     top: 23px;
                 }
@@ -49,5 +49,8 @@
                 top: 20px;
             }
         }
+    }
+    & .ticket-preview{
+        padding: 0 24px;
     }
 }

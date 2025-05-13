@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import "./index.scss";
+import "./variables.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 

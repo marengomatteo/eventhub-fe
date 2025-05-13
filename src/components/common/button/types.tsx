@@ -1,7 +1,7 @@
 export interface ButtonProps {
   variant?: "primary" | "secondary" | "tertiary";
   label: string;
-  onClick?: () => {};
+  onClick?: () => void;
   isLoading?: boolean;
   disabled?: boolean;
   type?: "submit" | "button" | "reset";
