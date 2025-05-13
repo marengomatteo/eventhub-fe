@@ -2,11 +2,11 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  Navigate,
   Outlet,
-  redirect,
 } from "@tanstack/react-router";
 
-import { UserProvider, useUser } from "../context/UserContext";
+import { UserProvider } from "../context/UserContext";
 
 import HomePage from "@pages/HomePage";
 import LoginPage from "@pages/LoginPage";
@@ -14,6 +14,10 @@ import SearchResultsPage from "@pages/SearchResultsPages";
 import ProfilePage from "@pages/ProfilePage";
 import CreateEventPage from "@pages/CreateEventPage";
 import RegisterPage from "@pages/RegisterPage";
+
+const NotFound = () => {
+  return <Navigate to="/" />;
+};
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -53,6 +57,11 @@ const createEventRoute = createRoute({
   path: "/create-event",
   getParentRoute: () => rootRoute,
   component: CreateEventPage,
+});
+const notFoundRoute = createRoute({
+  path: "*",
+  getParentRoute: () => rootRoute,
+  component: NotFound,
 });
 
 const searchResultsRoute = createRoute({
@@ -95,6 +104,7 @@ const routeTree = rootRoute.addChildren([
   createEventRoute,
   searchResultsRoute,
   registerRoute,
+  notFoundRoute,
   //dashboardRoute,
 ]);
 
