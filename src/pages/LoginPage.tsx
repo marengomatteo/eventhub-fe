@@ -21,22 +21,16 @@ const LoginPage = () => {
       username: "",
       password: "",
     },
-    onValuesChange: (values) => {
-      console.log(values);
-    },
     validate: {
       username: (value) => {
-        if (!value) {
-          return "Username is required";
-        } if (!value.match("/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim")) {
-          return "Username non valida";
-        }
+        if (!value) return "Username is required";
+        const emailRegex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
+        if (!emailRegex.test(value)) return "Username non valida";
         return null;
       },
       password: (value) => {
-        if (!value) {
-          return "Password is required";
-        }
+        console.log(value);
+        if (!value) return "Password is required";
         return null;
       },
     }
@@ -52,50 +46,52 @@ const LoginPage = () => {
 
   const navigate = (to: string) => router.navigate({ to });
 
+
   return (
     <div className="login">
       <div className="left">
         <img src={logoExpanded} />
       </div>
-      <div className="right">
+      <form className="right" onSubmit={form.onSubmit((values) => {
+        console.log("Form valid:", values);
+      })}>
         <h1>Accedi per scoprire un mondo di eventi!</h1>
-        <form className="login-form">
+        <div className="login-form">
           <CustomInput
-            value={form.getValues().username}
+            name="username"
             key={form.key("username")}
-            setValue={(value: string) => form.setFieldValue("username", value)}
             label={"Username"}
-            {...form.getInputProps("username")}
+            form={form}
           />
           <CustomInput
-            value={form.getValues().password}
+            name="password"
             type="password"
             key={form.key("password")}
-            setValue={(value: string) => form.setFieldValue("password", value)}
-            {...form.getInputProps("password")}
             label={"Passsword"}
+            form={form}
           />
           <Button
             className="forgotPassword"
             variant="tertiary"
             label="Password dimenticata?"
           />
-        </form>
-        <div className="login-separator">Oppure accedi con</div>
-        <div className="login-social-buttons">
-          <button className="social-login-button" onClick={() => login()} >
-            <img src={google} />
-          </button>
 
+          <div className="login-separator">Oppure accedi con</div>
+          <div className="login-social-buttons">
+            <button className="social-login-button" onClick={() => login()} >
+              <img src={google} />
+            </button>
+
+          </div>
+          <Button className="login-button" type="submit" label="Accedi" />
+          <Button
+            onClick={async () => await navigate("/register")}
+            className="register-button"
+            variant="tertiary"
+            label="o registrati"
+          />
         </div>
-        <Button className="login-button" type="submit" label="Accedi" />
-        <Button
-          onClick={async () => await navigate("/register")}
-          className="register-button"
-          variant="tertiary"
-          label="o registrati"
-        />
-      </div>
+      </form>
     </div>
   );
 };

@@ -71,7 +71,9 @@ const RegisterPage = () => {
   const passwordChecks = getPasswordRequirements(passwordValue);
 
   const validateStep1 = () => {
+    console.log("BB");
     const res = form.validateField("userType");
+    console.log("BB", res);
     if (!res.hasError) {
       setStep(2);
     } else {
@@ -98,6 +100,7 @@ const RegisterPage = () => {
         {step === 2 ? <button className="backArrow" onClick={() => setStep(prev => prev - 1)}><img src={backArrow} /></button> : null}
         <h1>{step === 1 ? "Scegli il tuo ruolo" : "Registrati!"}</h1>
         <form onSubmit={(e) => {
+          console.log("AA", form.getValues());
           e.preventDefault();
         }} className="login-form">
           {step == 1 ? <>
@@ -114,17 +117,13 @@ const RegisterPage = () => {
             </div>
           </> : <>
             <CustomInput
-              value={form.getValues().email}
-              setValue={(value: string) => form.setFieldValue("email", value)}
               label={"Email"}
               error={form.errors.email}
               {...form.getInputProps("email")}
             />
             <div>
               <CustomInput
-                value={form.getValues().password}
                 type="password"
-                setValue={(value: string) => form.setFieldValue("password", value)}
                 error={form.errors.password}
                 {...form.getInputProps("password")}
                 label={"Password"}
@@ -138,9 +137,7 @@ const RegisterPage = () => {
               </ul>
             </div>
             <CustomInput
-              value={form.getValues().confermaPassword}
               type="password"
-              setValue={(value: string) => form.setFieldValue("confermaPassword", value)}
               error={form.errors.confermaPassword}
               {...form.getInputProps("confermaPassword")}
               label={"Conferma Password"}
