@@ -4,7 +4,7 @@ import './styles/index.scss';
 import { handleDownload } from "@utils/downloadUtil.tsx";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { TicketPDF } from "../TicketPDF/TicketPDF";
-
+import { router } from "@routes/router";
 interface TicketProps {
     order: unknown;
 }
@@ -15,7 +15,7 @@ const Ticket: React.FC<TicketProps> = ({
     const formattedAmount = (order as any).amount.toFixed(2);
     const { orderId, orderDate, amount, eventName, eventDate, eventTime, quantity, imageUrl, location } = order as any;
     return (
-        <div className="ticket">
+        <button className="ticket" onClick={() => router.navigate({ to: `/details/${orderId}` })}>
             <div className="ticket__header">
                 <span className="ticket__order-info">Ordine <span className="ticket__order-id">{orderId}</span> del {orderDate}</span>
                 <span className="ticket__amount">Importo: <span className="ticket__amount-value">{formattedAmount}</span>€</span>
@@ -36,11 +36,13 @@ const Ticket: React.FC<TicketProps> = ({
                     fileName={`biglietto-${orderId}.pdf`}
                     className='ticket__download-button'
                 >
-                    <i className='icon icon-download'></i>
-                    <span>Scarica</span>
+                    <span onClick={(e) => e.stopPropagation()}>
+                        <i className='icon icon-download'></i>
+                        <span>Scarica</span>
+                    </span>
                 </PDFDownloadLink>
             </div>
-        </div>
+        </button>
     );
 };
 

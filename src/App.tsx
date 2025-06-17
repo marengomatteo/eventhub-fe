@@ -3,7 +3,7 @@ import { useState } from "react";
 import { UserProvider } from "./context/UserContext";
 
 import { RouterProvider } from "@tanstack/react-router";
-import { router } from "./routes/router";
+import { router } from "@routes/router";
 import { MantineProvider } from "@mantine/core";
 
 function App() {
