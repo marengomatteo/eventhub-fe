@@ -1,0 +1,84 @@
+.ticket {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 100%;
+  width: 100%;
+  color: var(--text-color);
+  margin-bottom: 16px;
+
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    font-size: 14px;
+    & .ticket__order-id{
+        font-weight: 700;
+    }
+  }
+
+  &__divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 0 16px;
+  }
+
+  &__content {
+    display: flex;
+    padding: 16px;
+    position: relative;
+  }
+
+  &__image {
+    width: 220px;
+    height: 220px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 16px;
+  }
+
+  &__details {
+    flex: 1;
+  }
+
+  &__quantity {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  &__date {
+    font-size: 14px;
+  }
+  &__amount{
+    &-value{
+      font-weight: 700;
+    }
+  }
+
+  &__download-button {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    background-color: var(--accent-orange);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: auto;
+    margin-top: auto;
+    &:hover {
+      background-color: var(--accent-orange-hover);
+    }
+  }
+  & .icon{
+      color: inherit;
+      margin-right: 8px;
+    }
+    
+}

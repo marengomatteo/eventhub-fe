@@ -26,6 +26,32 @@
     }
   }
 
+  &-secondary {
+    height: 50px;
+    min-width: 120px;
+    min-height: 50px;
+    max-width: 450px;
+    border-radius: 7px;
+    border:1px solid var(--accent-orange);
+    color: var(--accent-orange);
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+
+    &:not(:disabled):hover {
+      border-color: var(--accent-orange-hover);
+      color: var(--accent-orange-hover);
+    }
+
+    &:disabled:not(.loading) {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    &.loading {
+      cursor: not-allowed;
+    }
+  }
+
   &-tertiary {
     color: var(--accent-orange);
     text-underline-offset: 4px;

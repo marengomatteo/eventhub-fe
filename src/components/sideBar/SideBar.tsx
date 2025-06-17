@@ -21,7 +21,7 @@ const items = [{
 }
 ]
 
-const SideBar: FC<{ showExpanded?: boolean, children: ReactNode }> = ({ showExpanded = false, children }) => {
+const SideBar: FC<{ showExpanded?: boolean, children?: ReactNode }> = ({ showExpanded = false, children }) => {
     const pathname = useRouterState({ select: (s) => s.location.pathname });
 
     if (isUserAdmin()) {
