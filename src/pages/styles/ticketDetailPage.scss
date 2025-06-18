@@ -1,0 +1,111 @@
+.ticket-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+ & .left-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    box-shadow: 0px 4px 10px 0px rgba(144, 140, 140, 0.35);
+    border: 1px solid #D0D0D0;
+    border-radius: 10px;
+
+    & .ticket__img{
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+    }
+    & .ticket__details{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+        & .ticket__quantity{
+            font-weight: 700;
+            font-size: 20px;
+        }
+        & .ticket__date{
+            font-weight: 500;
+            font-size: 16px;
+            color: #403E3E;
+        }
+        & .ticket__location{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            font-weight: 500;
+            font-size: 16px;
+            color: #403E3E;
+
+        }
+        & hr{
+            width: 100%;
+            border-top: 1px solid #bdbdbd;
+            margin: 20px 0;
+        }
+        & .qrCode{
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        & .order-info{
+            font-weight: 400;
+            font-size: 16px;
+            color: #403E3E;
+            margin: 25px auto 0;
+            & span{
+                font-weight: 600;
+            }
+        }
+    }
+}
+    & .icon-pin{
+                width: 20px;
+                height: 20px;
+            }
+    
+ & .right-container {
+    
+    & .arrival-section{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        & h2{
+            margin:0;
+        }
+        & .location{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    }
+    & .personal-data{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 10px;
+        & h3{
+            font-weight: 500;
+            grid-column: 1/-1;
+        }
+        & .personal-data__item{
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+            & span{
+                font-weight: 600;
+                font-size: 16px;
+            }               
+            &.full{
+                grid-column: 1/-1;
+            }
+        }
+    }
+ }
+
+}

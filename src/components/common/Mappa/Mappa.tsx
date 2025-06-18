@@ -1,19 +1,19 @@
-const StaticMap = ({ location }: { location: string }) => {
+const StaticMap = ({ locationName, full }: { locationName: string, full?: boolean }) => {
     const handleClick = () => {
-        if (location) {
-            const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location)}`;
+        if (locationName) {
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(locationName)}`;
             window.open(url, '_blank');
         }
     };
 
-    const mapUrl = location
-        ? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(location)}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C${encodeURIComponent(location)}&key=AIzaSyChk89dukymtLY_M7uYS3ZdRcu9z9p9-us`
+    const mapUrl = locationName
+        ? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(locationName)}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C${encodeURIComponent(locationName)}&key=AIzaSyChk89dukymtLY_M7uYS3ZdRcu9z9p9-us`
         : null;
 
     return (
         <div
             style={{
-                height: 120,
+                height: full ? 260 : 120,
                 backgroundColor: '#f5f7fa',
                 borderRadius: 8,
                 overflow: 'hidden',
@@ -21,7 +21,7 @@ const StaticMap = ({ location }: { location: string }) => {
                 position: 'relative',
             }}
         >
-            {location && mapUrl ? (
+            {locationName && mapUrl ? (
                 <div
                     style={{
                         width: '100%',

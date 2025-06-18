@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
 });
 
 export function TicketPDF({ biglietto }: { biglietto: any }) {
-    const mapUrl = biglietto.location
+    const mapUrl = biglietto.locationName
         ? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
-            biglietto.location,
+            biglietto.locationName,
         )}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C${encodeURIComponent(
-            biglietto.location,
+            biglietto.locationName,
         )}&key=AIzaSyChk89dukymtLY_M7uYS3ZdRcu9z9p9-us`
         : null;
 
@@ -155,7 +155,7 @@ export function TicketPDF({ biglietto }: { biglietto: any }) {
                             <View style={styles.locationRow}>
                                 <Image src={locationIcon} style={{ width: 12, height: 12, marginRight: 4 }} />
                                 <Text style={styles.locationText}>
-                                    {biglietto.location || 'Luogo non specificato'}
+                                    {biglietto.locationName || 'Luogo non specificato'}
                                 </Text>
                             </View>
                             {biglietto.address && (

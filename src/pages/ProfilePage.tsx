@@ -1,11 +1,10 @@
-import Header from "@components/header/Header"
-import SideBar from "@components/sideBar/SideBar";
-import "./styles/profilePage.scss";
 import Ticket from "@components/ticket/Ticket";
 import Button from "@components/common/button/Button";
 import { useState } from "react";
-import StaticMap from "@components/common/Mappa/Mappa";
-import Logo from "@assets/logo-expanded.png";
+import ProfilePageLayout from "@components/common/profilePageLayout/ProfilePageLayout";
+
+import "./styles/profilePage.scss";
+
 const ProfilePage = () => {
     const [showPreviousOrders, setShowPreviousOrders] = useState(false);
     const orders = [
@@ -18,7 +17,8 @@ const ProfilePage = () => {
             eventTime: "19:00",
             quantity: 1,
             imageUrl: "https://picsum.photos/200",
-            location: "Palalpitour Torino",
+            locationName: "Palalpitour Torino",
+            location: "Palalpitour Torino - via Piazza Italia, 1",
             name: "Marco",
             surname: "Marconi",
             email: "marco.marconi@gmail.com",
@@ -33,7 +33,8 @@ const ProfilePage = () => {
             eventTime: "19:00",
             quantity: 1,
             imageUrl: "https://picsum.photos/200",
-            location: "Palalpitour Torino",
+            locationName: "Palalpitour Torino",
+            location: "Palalpitour Torino - via Piazza Italia, 1",
             name: "Marco",
             surname: "Marconi",
             email: "marco.marconi@gmail.com",
@@ -41,32 +42,26 @@ const ProfilePage = () => {
         }
     ]
 
-    return <>
-        <Header showProfileIcon={false} />
-        <div className="profile">
-            <SideBar />
-            <div className="page-content">
-                <div className="user">
-                    <div className="user-info">MM</div>
-                    <div>
-                        <div className="user-name">Marco Marconi</div>
-                        <div className="user-orders">{orders?.length} {orders?.length == 1 ? "ordine" : "ordini"}</div>
-                    </div>
-                </div>
-                <h2>Il tuo prossimo evento </h2>
-                <Ticket order={orders[0]} />
-                {!showPreviousOrders && <Button className="seeMore" variant="secondary" label="Vedi ordini precedenti" onClick={() => setShowPreviousOrders(true)} />}
-                {showPreviousOrders && (
-                    <div className="previous-orders">
-                        {orders.slice(1).map((order, index) => (
-                            <Ticket key={index} order={order} />
-                        ))}
-                    </div>
-                )}
-
+    return <ProfilePageLayout>
+        <div className="user">
+            <div className="user-info">MM</div>
+            <div>
+                <div className="user-name">Marco Marconi</div>
+                <div className="user-orders">{orders?.length} {orders?.length == 1 ? "ordine" : "ordini"}</div>
             </div>
-        </div >
-    </>;
+        </div>
+        <h2>Il tuo prossimo evento </h2>
+        <Ticket order={orders[0]} />
+        {!showPreviousOrders && <Button className="seeMore" variant="secondary" label="Vedi ordini precedenti" onClick={() => setShowPreviousOrders(true)} />}
+        {showPreviousOrders && (
+            <div className="previous-orders">
+                {orders.slice(1).map((order, index) => (
+                    <Ticket key={index} order={order} />
+                ))}
+            </div>
+        )}
+
+    </ProfilePageLayout>
 };
 
 export default ProfilePage;

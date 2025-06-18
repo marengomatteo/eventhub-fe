@@ -5,15 +5,17 @@ import { handleDownload } from "@utils/downloadUtil.tsx";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { TicketPDF } from "../TicketPDF/TicketPDF";
 import { router } from "@routes/router";
+import { Order } from "@utils/types";
+
 interface TicketProps {
-    order: unknown;
+    order: Order;
 }
 
 const Ticket: React.FC<TicketProps> = ({
     order
 }) => {
     const formattedAmount = (order as any).amount.toFixed(2);
-    const { orderId, orderDate, amount, eventName, eventDate, eventTime, quantity, imageUrl, location } = order as any;
+    const { orderId, orderDate, amount, eventName, eventDate, eventTime, quantity, imageUrl } = order;
     return (
         <button className="ticket" onClick={() => router.navigate({ to: `/details/${orderId}` })}>
             <div className="ticket__header">

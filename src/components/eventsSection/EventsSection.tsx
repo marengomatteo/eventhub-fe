@@ -8,7 +8,7 @@ interface EventsSectionProps {
     name: string;
     image: string;
     date: string;
-    location: string;
+    locationName: string;
   }[];
 }
 
@@ -26,7 +26,7 @@ const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
               </div>
             </div>
             <div className="event-details">
-              <div className="event-location">{event.location}</div>
+              <div className="event-location">{event.locationName}</div>
               <div className="event-date">{event.date}</div>
             </div>
           </div>

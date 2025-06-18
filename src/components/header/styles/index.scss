@@ -81,11 +81,13 @@ header {
     }
   }
 
-  & .profile {
+  & .header-profile {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    height: fit-content;
+    margin-left: auto;
     img {
       width: 30px;
     }

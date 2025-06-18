@@ -17,7 +17,7 @@ const items = [{
 {
     icon: profile,
     id: "profile",
-    ref: "/profile"
+    refs: ["/profile", "/details/"]
 }
 ]
 
@@ -41,7 +41,7 @@ const SideBar: FC<{ showExpanded?: boolean, children?: ReactNode }> = ({ showExp
     return <div className="sidebar-wrapper">
         <div className="sidebar">
             {items.map((item, index) => {
-                const isSelected = pathname == item.ref;
+                const isSelected = item.refs?.some(ref => pathname.startsWith(ref));
                 return <Link to={item.ref} className={`item ${isSelected ? "selected" : ""}`} key={index}>
                     <img src={item.icon} />
                 </Link>

@@ -31,7 +31,7 @@ const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb, showProfil
             ))}
           </div>
         )}
-        {showProfileIcon && <div className="profile">
+        {showProfileIcon && <div className="header-profile">
           {user ? (
             <div className="profile-container">
               <div className="profile-logo">
