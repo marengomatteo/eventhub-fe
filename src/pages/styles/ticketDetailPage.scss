@@ -23,6 +23,7 @@
         flex-direction: column;
         width: 100%;
         padding: 20px;
+        position: relative;
         & .ticket__quantity{
             font-weight: 700;
             font-size: 20px;
@@ -61,6 +62,24 @@
             margin: 25px auto 0;
             & span{
                 font-weight: 600;
+            }
+        }
+        & .download-button{
+            position: absolute;
+            right: 25px;
+            border: 1px solid #d0d0d0;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #d9d9d923;
+            padding: 0;
+            cursor: pointer;
+            & i{
+                color: #EB5D24;
+                font-size: 20px;
             }
         }
     }

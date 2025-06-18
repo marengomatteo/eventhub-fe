@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import ProfilePageLayout from "@components/common/profilePageLayout/ProfilePageLayout";
 import StaticMap from "@components/common/Mappa/Mappa";
 import locationIcon from '@assets/icons/pin.png';
+import { handleDownload } from "@utils/downloadUtil";
 
 import "./styles/ticketDetailPage.scss";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { TicketPDF } from "@components/TicketPDF/TicketPDF";
 
 const TicketDetailPage: React.FC<{}> = () => {
     const [order, setOrder] = useState<Order | null>(null);
@@ -60,6 +63,13 @@ const TicketDetailPage: React.FC<{}> = () => {
                         <div className="order-info">
                             Ordine <span>{order?.orderId}</span> del {order?.orderDate}
                         </div>
+                        <PDFDownloadLink
+                            document={<TicketPDF biglietto={{ ...order as any }} />}
+                            fileName={`biglietto-${order?.orderId}.pdf`}
+                            className='download-button'
+                        >
+                            <i className="icon icon-download"></i>
+                        </PDFDownloadLink>
                     </div>
 
 
