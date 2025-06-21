@@ -6,6 +6,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import '@mantine/dropzone/styles.css';
+import '@mantine/dates/styles.css';
 
 import "./index.scss";
 import "./variables.css";

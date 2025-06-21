@@ -65,7 +65,10 @@
  }   
 
 }
-
+.has-error {
+  border: 2px solid red !important;
+  border-radius: 10px;
+}
 .files-carousel {
   max-width: 100%;
   overflow: hidden;

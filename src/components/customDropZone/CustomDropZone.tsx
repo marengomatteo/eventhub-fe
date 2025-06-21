@@ -1,31 +1,43 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Carousel } from '@mantine/carousel';
 import { Group, Text } from '@mantine/core';
 import { Dropzone, DropzoneProps } from '@mantine/dropzone';
 
-import uploadIcon from "@icons/upload.svg"
-import errorIcon from "@icons/error.svg"
-import photoIcon from "@icons/photo.svg"
-import addIcon from "@icons/add.svg"
+import uploadIcon from "@icons/upload.svg";
+import errorIcon from "@icons/error.svg";
+import photoIcon from "@icons/photo.svg";
+import addIcon from "@icons/add.svg";
 import Button from '@components/common/button/Button';
 
-import "./styles/index.scss"
+import "./styles/index.scss";
 
-const CustomDropZone = (props: Partial<DropzoneProps>) => {
-    const [files, setFiles] = useState<File[]>([]);
+interface CustomDropZoneProps extends Partial<DropzoneProps> {
+    required?: boolean;
+    error?: boolean;
+    files: File[];
+    setFiles: (files: File[]) => void;
+    onFilesChange?: (files: File[]) => void;
+}
+
+const CustomDropZone = ({ required, error = false, onFilesChange, files, setFiles, ...props }: CustomDropZoneProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newFiles = event.target.files ? Array.from(event.target.files) : [];
-        setFiles(prev => [...prev, ...newFiles]);
+        setFiles([...files, ...newFiles]);
     };
 
     const openFileDialog = () => {
         inputRef.current?.click();
     };
+
+    useEffect(() => {
+        onFilesChange?.(files);
+    }, [files]);
+
     return (
-        files.length > 0 ?
-            <div className='item'>
+        files.length > 0 ? (
+            <div className={required && error && files.length === 0 ? "has-error item" : "item"}>
                 <Button className='button-add' icon={addIcon} onClick={openFileDialog} />
                 <input
                     type="file"
@@ -48,21 +60,23 @@ const CustomDropZone = (props: Partial<DropzoneProps>) => {
                         const isImage = file.type.startsWith('image');
                         const isVideo = file.type.startsWith('video');
 
-                        return <Carousel.Slide key={index}>
-                            {isImage && <img src={url} alt={file.name} />}
-                            {isVideo && (
-                                <video controls autoPlay>
-                                    <source src={url} type={file.type} />
-                                    Il tuo browser non supporta il video.
-                                </video>
-                            )}
-                        </Carousel.Slide>
+                        return (
+                            <Carousel.Slide key={index}>
+                                {isImage && <img src={url} alt={file.name} />}
+                                {isVideo && (
+                                    <video controls autoPlay>
+                                        <source src={url} type={file.type} />
+                                        Il tuo browser non supporta il video.
+                                    </video>
+                                )}
+                            </Carousel.Slide>
+                        );
                     })}
-                </Carousel >
+                </Carousel>
             </div>
-            :
+        ) : (
             <Dropzone
-                className='dropzone'
+                className={required && error ? "has-error dropzone" : "dropzone"}
                 onDrop={(files) => setFiles(files)}
                 onReject={(files) => console.log('rejected files', files)}
                 maxSize={5 * 1024 ** 2}
@@ -88,7 +102,8 @@ const CustomDropZone = (props: Partial<DropzoneProps>) => {
                                 Formato non valido
                             </Text>
                             <Text className='small-title' size="sm" c="dimmed" inline mt={7}>
-                                Formati accettati: .jpg, .jpeg, .png, .webp, .gif, .svg                            </Text>
+                                Formati accettati: .jpg, .jpeg, .png, .webp, .gif, .svg
+                            </Text>
                         </div>
                     </Dropzone.Reject>
                     <Dropzone.Idle>
@@ -102,11 +117,10 @@ const CustomDropZone = (props: Partial<DropzoneProps>) => {
                             </Text>
                         </div>
                     </Dropzone.Idle>
-
-
                 </Group>
             </Dropzone>
-    )
-}
+        )
+    );
+};
 
 export default CustomDropZone;
