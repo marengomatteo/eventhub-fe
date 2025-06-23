@@ -1,6 +1,6 @@
 import { useForm } from "@mantine/form";
 import { useRouter } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getPasswordRequirements } from "../utils";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
@@ -30,6 +30,13 @@ const RegisterPage = () => {
   });
   const { setUser } = useUser();
   const [step, setStep] = useState(1);
+  const [passwordChecks, setPasswordChecks] = useState({
+    hasUpperCase: false,
+    hasLowerCase: false,
+    hasNumber: false,
+    hasSymbol: false,
+    hasMinLength: false,
+  });
   const form = useForm<FormValues>({
     mode: "uncontrolled",
     initialValues: {
@@ -40,8 +47,9 @@ const RegisterPage = () => {
       password: "",
       confermaPassword: "",
     },
-    onValuesChange: (values) => {
-      console.log(values);
+    onValuesChange(values, previous) {
+      const passwordChecks = getPasswordRequirements(values.password);
+      setPasswordChecks(passwordChecks);
     },
     validate: {
       userType: (value) => {
@@ -89,14 +97,10 @@ const RegisterPage = () => {
       },
     }
   });
-  const passwordValue = form.getValues().password;
-  const passwordChecks = getPasswordRequirements(passwordValue);
 
   const router = useRouter();
   const validateStep1 = () => {
-    console.log("BB");
     const res = form.validateField("userType");
-    console.log("BB", res);
     if (!res.hasError) {
       setStep(2);
     } else {
@@ -109,6 +113,8 @@ const RegisterPage = () => {
 
     if (email || password || confermaPassword) {
       console.log("Ci sono errori nel form", result.errors);
+    } else {
+      handleRegister();
     }
   };
 
@@ -142,7 +148,6 @@ const RegisterPage = () => {
         {step === 2 ? <button className="backArrow" onClick={() => setStep(prev => prev - 1)}><img src={backArrow} /></button> : null}
         <h1>{step === 1 ? "Scegli il tuo ruolo" : "Registrati!"}</h1>
         <form onSubmit={(e) => {
-          handleRegister();
           e.preventDefault();
         }} className="login-form">
           {step == 1 ? <>

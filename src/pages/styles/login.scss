@@ -20,7 +20,7 @@
     padding: 24px;
     background-color: #fff;
     height: fit-content;
-    margin: 0 38px;
+    margin: 0 auto;
 
     & h1 {
       font-size: 24px;
@@ -68,6 +68,7 @@
       align-items: center;
       justify-content: center;
       margin-top: 20px;
+      margin: auto;
     }
     & .register-button {
       margin-top: 8px;
