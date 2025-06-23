@@ -420,7 +420,6 @@ const CreateEventPage = () => {
                 </SideBar>
                 <div className="content">
                     <form onSubmit={form.onSubmit((values) => {
-                        debugger;
                         if (step == 1) {
                             console.log(form.errors)
                             setStep((prev) => prev + 1);

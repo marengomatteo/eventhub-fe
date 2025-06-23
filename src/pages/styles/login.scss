@@ -1,5 +1,6 @@
 .login {
-  height: 100dvh;
+  min-height: 100dvh;
+  height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -133,7 +134,7 @@
       align-items: center;
       justify-content: center;
       background-color: rgba($color: var(--accent-orange-rgb), $alpha: 0.33) ;
-      height: 100dvh;
+      height: 100%;
 
       & img {
         width: 250px;
@@ -143,7 +144,6 @@
     & .right {
       justify-content: center;
       padding: 80px;
-      height: 100dvh;
       & h1 {
         font-size: 32px;
         margin-bottom: 20px;

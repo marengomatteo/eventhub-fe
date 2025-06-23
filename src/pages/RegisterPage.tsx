@@ -2,6 +2,8 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { getPasswordRequirements } from "../utils";
+import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 import Button from "../components/common/button/Button";
 import CustomInput from "@components/common/input/CustomInput";
@@ -14,19 +16,27 @@ import "./styles/registerPage.scss";
 interface FormValues {
   userType: string;
   email: string;
+  name: string;
+  surname: string;
   password: string;
   confermaPassword: string;
 }
-const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$/;
+const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!"#$%&'()*+,-./: ;<=>? @]).{8,}$/;
 
 const RegisterPage = () => {
-  const router = useRouter();
+  const api = axios.create({
+    baseURL: "http://localhost:8082/user-service/authentication",
+    withCredentials: true,
+  });
+  const { setUser } = useUser();
   const [step, setStep] = useState(1);
   const form = useForm<FormValues>({
     mode: "uncontrolled",
     initialValues: {
       userType: "",
       email: "",
+      name: "",
+      surname: "",
       password: "",
       confermaPassword: "",
     },
@@ -46,6 +56,18 @@ const RegisterPage = () => {
           return "Questo campo è obbligatorio";
         } if (!emailRegex.test(value)) {
           return "Email non valida";
+        }
+        return null;
+      },
+      name: (value) => {
+        if (!value) {
+          return "Questo campo è obbligatorio";
+        }
+        return null;
+      },
+      surname: (value) => {
+        if (!value) {
+          return "Questo campo è obbligatorio";
         }
         return null;
       },
@@ -70,6 +92,7 @@ const RegisterPage = () => {
   const passwordValue = form.getValues().password;
   const passwordChecks = getPasswordRequirements(passwordValue);
 
+  const router = useRouter();
   const validateStep1 = () => {
     console.log("BB");
     const res = form.validateField("userType");
@@ -80,14 +103,33 @@ const RegisterPage = () => {
       form.setFieldError("userType", "Questo campo è obbligatorio");
     }
   };
-  const validateStep2 = () => {
+  const validateStep2 = async () => {
     const result = form.validate();
     const { email, password, confermaPassword } = result.errors;
 
-    if (!email && !password && !confermaPassword) {
-      console.log("Form valido, puoi inviare");
-    } else {
+    if (email || password || confermaPassword) {
       console.log("Ci sono errori nel form", result.errors);
+    }
+  };
+
+  const handleRegister = async () => {
+    const response = await api.post("/signup", {
+      email: form.getValues().email,
+      password: form.getValues().password,
+      name: form.getValues().name,
+      surname: form.getValues().surname,
+    });
+    if (response.status === 200) {
+      const { data: { userDataResponse } } = response;
+      const userData = {
+        id: userDataResponse.id,
+        name: userDataResponse.name,
+        surname: userDataResponse.surname,
+        email: userDataResponse.email,
+        role: userDataResponse.role,
+      };
+      setUser(userData);
+      router.navigate({ to: "/" });
     }
   };
 
@@ -100,7 +142,7 @@ const RegisterPage = () => {
         {step === 2 ? <button className="backArrow" onClick={() => setStep(prev => prev - 1)}><img src={backArrow} /></button> : null}
         <h1>{step === 1 ? "Scegli il tuo ruolo" : "Registrati!"}</h1>
         <form onSubmit={(e) => {
-          console.log("AA", form.getValues());
+          handleRegister();
           e.preventDefault();
         }} className="login-form">
           {step == 1 ? <>
@@ -120,6 +162,18 @@ const RegisterPage = () => {
               label={"Email"}
               name="email"
               key="email"
+              form={form}
+            />
+            <CustomInput
+              label={"Nome"}
+              name="name"
+              key="name"
+              form={form}
+            />
+            <CustomInput
+              label={"Cognome"}
+              name="surname"
+              key="surname"
               form={form}
             />
             <div>
