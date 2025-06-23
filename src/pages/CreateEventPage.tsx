@@ -1,16 +1,17 @@
-import { useState } from 'react';
+import CustomInput from '@components/common/input/CustomInput';
+import CustomDropZone from '@components/customDropZone/CustomDropZone';
 import Header from '@components/header/Header';
 import SideBar from '@components/sideBar/SideBar';
-import CustomDropZone from '@components/customDropZone/CustomDropZone';
 import { useForm } from '@mantine/form';
-import CustomInput from '@components/common/input/CustomInput';
-
-import "./styles/createEvent.scss";
-import { DateTimePicker } from '@mantine/dates';
-import DateTimeInput from '@components/common/input/DateTimeInput';
+import { useState } from 'react';
+import locationIcon from '@assets/icons/pin.png';
 import CustomSelect from '@components/common/input/CustomSelect';
-import { Button, NumberInput } from '@mantine/core';
 import CustomTextArea from '@components/common/input/CustomTextArea';
+import DateTimeInput from '@components/common/input/DateTimeInput';
+import { ActionIcon, Button, NumberInput } from '@mantine/core';
+import "./styles/createEvent.scss";
+
+
 
 interface ExpandableBlockProps {
     title: string;
@@ -56,12 +57,10 @@ const ExpandableBlock = ({
 
 const timelineItems = [
     { title: "Crea evento", description: "Inserisci tutti i dati" },
-    { title: "Aggiungi i biglietti", description: "Inserisci le tipologie di biglietto disponibili" },
-    { title: "Pubblica", description: "Fai conoscere il tuo evento!" },
+    { title: "Imposta l'agenda", description: "Inserisci le sessioni dell'evento" },
 
 ]
 
-const step = 0;
 
 const EventTitleBlock = ({ form }: { form: any }) => {
     const hasError = Boolean(form.errors.title || form.errors.description);
@@ -69,7 +68,6 @@ const EventTitleBlock = ({ form }: { form: any }) => {
     return (
         <ExpandableBlock
             title="Titolo e descrizione"
-            icon={<i className="icon-title"></i>}
             onSave={() => console.log('Saving title and description')}
             hasError={hasError}
         >
@@ -102,7 +100,6 @@ const EventDetailsBlock = ({ form }: { form: any }) => {
     return (
         <ExpandableBlock
             title="Dettagli evento"
-            icon={<i className="icon-details"></i>}
             onSave={() => console.log('Saving event details')}
             hasError={hasError}
         >
@@ -132,8 +129,6 @@ const EventDetailsBlock = ({ form }: { form: any }) => {
 };
 
 const EventLocationBlock = ({ form }: { form: any }) => {
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
     const [isRange, setIsRange] = useState(false);
     const hasError = Boolean(
         form.errors.location ||
@@ -144,7 +139,6 @@ const EventLocationBlock = ({ form }: { form: any }) => {
     return (
         <ExpandableBlock
             title="Luogo e data"
-            icon={<i className="icon-location"></i>}
             onSave={() => console.log('Saving location and date')}
             hasError={hasError}
         >
@@ -173,7 +167,6 @@ const EventLocationBlock = ({ form }: { form: any }) => {
                         key={form.key("endDate")}
                         label="Data fine"
                         form={form}
-                        required
                     />
                 </div>
             )}
@@ -188,6 +181,134 @@ const EventLocationBlock = ({ form }: { form: any }) => {
     );
 };
 
+const EventAgendaBlock = ({ form }: { form: any }) => {
+    const sessions = form.values.agenda || [];
+    const agendaErrors = Array.isArray(form.errors.agenda) ? form.errors.agenda : [];
+    const hasError = agendaErrors.length > 0 || (typeof form.errors.agenda === 'string' && form.errors.agenda.length > 0);
+
+    const addSession = () => {
+        form.insertListItem('agenda', {
+            speaker: '',
+            title: '',
+            location: '',
+            description: '',
+            startTime: null,
+            endTime: null
+        });
+    };
+
+    const removeSession = (index: number) => {
+        form.removeListItem('agenda', index);
+    };
+
+    return (
+        <ExpandableBlock
+            title="Agenda dell'evento"
+            defaultExpanded={false}
+            hasError={hasError}
+        >
+            {typeof form.errors.agenda === 'string' && (
+                <div className="form-error" style={{ color: 'red', marginBottom: '16px' }}>
+                    {form.errors.agenda}
+                </div>
+            )}
+            <div className="sessions-list">
+                {sessions.map((_: any, index: number) => (
+                    <div key={index} className="session-block">
+                        <div className="session-header">
+                            <h4>Sessione {index + 1}</h4>
+                            {sessions.length > 1 && (
+                                <ActionIcon
+                                    color="red"
+                                    onClick={() => removeSession(index)}
+                                    variant="subtle"
+                                >
+                                    {/* <IconTrash size={16} /> */}
+                                </ActionIcon>
+                            )}
+                        </div>
+                        <div className="form-group">
+                            <CustomInput
+                                name={`agenda.${index}.title`}
+                                key={form.key(`agenda.${index}.title`)}
+                                label="Titolo sessione"
+                                placeholder="Inserisci il titolo della sessione"
+                                form={form}
+                                error={agendaErrors[index]?.title}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <CustomInput
+                                name={`agenda.${index}.speaker`}
+                                key={form.key(`agenda.${index}.speaker`)}
+                                label="Speaker/Performer"
+                                placeholder="Inserisci nome speaker/performer"
+                                form={form}
+                                error={agendaErrors[index]?.speaker}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <CustomInput
+                                name={`agenda.${index}.location`}
+                                key={form.key(`agenda.${index}.location`)}
+                                label="Luogo"
+                                placeholder="Dove si terrà la sessione"
+                                form={form}
+                                error={agendaErrors[index]?.location}
+                                required
+                            />
+                        </div>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <DateTimeInput
+                                    name={`agenda.${index}.startTime`}
+                                    key={form.key(`agenda.${index}.startTime`)}
+                                    label="Ora inizio"
+                                    form={form}
+                                    error={agendaErrors[index]?.startTime}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <DateTimeInput
+                                    name={`agenda.${index}.endTime`}
+                                    key={form.key(`agenda.${index}.endTime`)}
+                                    label="Ora fine"
+                                    form={form}
+                                    error={agendaErrors[index]?.endTime}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <CustomTextArea
+                                name={`agenda.${index}.description`}
+                                key={form.key(`agenda.${index}.description`)}
+                                label="Descrizione"
+                                placeholder="Descrizione della sessione"
+                                form={form}
+                                required
+                                error={agendaErrors[index]?.description}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <Button
+                // leftSection={ }
+                onClick={addSession}
+                variant="outline"
+                fullWidth
+                mt="md"
+            >
+                Aggiungi Sessione
+            </Button>
+        </ExpandableBlock>
+    );
+};
+
 const CreateEventPage = () => {
     const form = useForm({
         initialValues: {
@@ -196,12 +317,15 @@ const CreateEventPage = () => {
             eventType: '',
             maxParticipants: 1,
             location: '',
-            startDate: '',
-            endDate: '',
+            startDate: null,
+            endDate: null,
             isRange: false,
+            agenda: [],
         },
         validate: (values) => {
             const errors: Record<string, string> = {};
+            console.log("validation");
+            console.log(files, form.getValues());
             if (files.length === 0) {
                 setFilesError(true);
 
@@ -227,12 +351,48 @@ const CreateEventPage = () => {
             if (values.isRange && !values.endDate) {
                 errors.endDate = 'Data fine è obbligatoria';
             }
+            if (!values.agenda || values.agenda.length === 0) {
+                errors.agenda = 'Aggiungi almeno una sessione all\'agenda';
+            } else {
+                const agendaErrors: any[] = [];
+                values.agenda.forEach((session: any, index: number) => {
+                    const sessionErrors: Record<string, string> = {};
+
+                    if (!session.title) {
+                        sessionErrors.title = 'Titolo sessione è obbligatorio';
+                    }
+                    if (!session.speaker) {
+                        sessionErrors.speaker = 'Speaker/Performer è obbligatorio';
+                    }
+                    if (!session.location) {
+                        sessionErrors.location = 'Luogo è obbligatorio';
+                    }
+                    if (!session.description) {
+                        sessionErrors.description = 'Descrizione è obbligatoria';
+                    }
+                    if (!session.startTime) {
+                        sessionErrors.startTime = 'Ora inizio è obbligatoria';
+                    }
+                    if (!session.endTime) {
+                        sessionErrors.endTime = 'Ora fine è obbligatoria';
+                    }
+
+                    if (Object.keys(sessionErrors).length > 0) {
+                        agendaErrors[index] = sessionErrors;
+                    }
+                });
+
+                if (agendaErrors.length > 0) {
+                    // Cast esplicito per risolvere il problema di tipo
+                    errors.agenda = agendaErrors as any;
+                }
+            }
             return errors;
         },
     });
     const [files, setFiles] = useState<File[]>([]);
     const [filesError, setFilesError] = useState(false);
-
+    const [step, setStep] = useState(1);
     return (
         <>
             <Header />
@@ -240,10 +400,16 @@ const CreateEventPage = () => {
                 <SideBar showExpanded={true}>
                     <div className="ticket-preview">
                         <h3>Anteprima Biglietto</h3>
+                        <div className='preview-ticket'>
+                            <h4>{form.getValues().title || "Titolo evento"}</h4>
+                            <p>{form.getValues().description || "Descrizione"}</p>
+                            <p className='secondary-info'>Data e ora: {form.getValues().startDate ? new Date(form.getValues().startDate!).toUTCString() : "Non inserita"} {form.getValues().endDate && " - " + form.getValues().endDate}</p>
+                            <p className='secondary-info'><img src={locationIcon} />Location: {form.getValues().location || "Non inserita"}</p>
+                        </div>
                     </div>
                     <div className="timeline">
                         {timelineItems.map((item, i) => {
-                            const isSelected = step == i;
+                            const isSelected = step - 1 == i;
                             return (
                                 <div key={i} className={`timeline-item ${isSelected ? "selected" : ""}`}>
                                     <p>{item.title}</p>
@@ -253,16 +419,31 @@ const CreateEventPage = () => {
                     </div>
                 </SideBar>
                 <div className="content">
-                    <CustomDropZone required error={filesError} files={files} setFiles={(files: File[]) => setFiles(files)} />
                     <form onSubmit={form.onSubmit((values) => {
-                        console.log(values);
+                        debugger;
+                        if (step == 1) {
+                            console.log(form.errors)
+                            setStep((prev) => prev + 1);
+                        } else {
+                            console.log("API conferma", values);
+                        }
                     })}>
-                        <div className='blocks'>
-                            <EventTitleBlock form={form} />
-                            <EventDetailsBlock form={form} />
-                            <EventLocationBlock form={form} />
-                            <Button className="submit-button" type='submit' variant="primary" > Avanti </Button>
-                        </div>
+                        {step == 1 ? <>
+                            <CustomDropZone required error={filesError} files={files} setFiles={(files: File[]) => setFiles(files)} />
+                            <div className='blocks'>
+                                <EventTitleBlock form={form} />
+                                <EventDetailsBlock form={form} />
+                                <EventLocationBlock form={form} />
+                                <Button className="submit-button" type='submit' variant="primary" > Avanti </Button>
+                            </div>
+                        </> :
+                            <>
+                                <div className='blocks'>
+                                    <EventAgendaBlock form={form} />
+                                    <Button className="submit-button" type='submit' variant="primary" > Avanti </Button>
+                                </div>
+                            </>
+                        }
                     </form>
                 </div>
             </div>

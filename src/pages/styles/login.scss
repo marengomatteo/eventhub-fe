@@ -37,6 +37,10 @@
       gap: 24px;
       margin-top: 20px;
 
+      & .error{
+        color: red;
+        font-size: 12px;
+      }
       & .input-text {
         width: 100%;
       }
@@ -72,6 +76,8 @@
       font-size: 14px;
       font-weight: 300;
       position: relative;
+      width: fit-content;
+      margin: auto;
       &::after,
       &::before {
         content: "";
@@ -92,10 +98,11 @@
     }
     & .login-social-buttons {
       display: flex;
+      align-items: center;
       gap: 16px;
-      margin-top: 24px;
       & .social-login-button{
         background-color: transparent;
+        margin: auto;
         & img{
           width: 40px;
           height: 40px;

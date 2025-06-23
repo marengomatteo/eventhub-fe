@@ -1,10 +1,24 @@
 import "./App.css";
 import { useState } from "react";
-import { UserProvider } from "./context/UserContext";
-
+import { UserProvider, useUser } from "./context/UserContext";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "@routes/router";
 import { MantineProvider } from "@mantine/core";
+
+// Componente wrapper per fornire il contesto al router
+function AppWithRouter() {
+  const { user, setUser } = useUser();
+
+  return (
+    <RouterProvider
+      router={router}
+      context={{
+        user,
+        setUser,
+      }}
+    />
+  );
+}
 
 function App() {
   const [coordinates, setCoordinates] = useState<{
@@ -18,16 +32,11 @@ function App() {
   }) => {
     setCoordinates(coordinates);
   };
+
   return (
     <UserProvider>
       <MantineProvider>
-        {/*  <Header />
-      <h1>Cerca eventi vicino a te</h1>
-      <SearchForm onLocationSelected={handleLocationSelected} />
-      {coordinates && <EventList coordinates={coordinates} />} */}
-        {/*         <LoginPage />
-         */}
-        <RouterProvider router={router} />
+        <AppWithRouter />
       </MantineProvider>
     </UserProvider>
   );

@@ -1,7 +1,16 @@
 import { Textarea } from "@mantine/core";
 
-const CustomTextArea = ({ label, placeholder, form, name, required }: { label: string; placeholder: string; form: any; name: string; required?: boolean }) => {
-    const error = form.errors[name as string];
+interface CustomTextAreaProps {
+    label: string;
+    placeholder: string;
+    form: any;
+    name: string;
+    required?: boolean;
+    error?: string;
+}
+
+const CustomTextArea = ({ label, placeholder, form, name, required, error }: CustomTextAreaProps) => {
+    const fieldError = error || form.errors[name as string];
 
     return (
         <Textarea
@@ -10,7 +19,7 @@ const CustomTextArea = ({ label, placeholder, form, name, required }: { label: s
             placeholder={placeholder}
             {...form.getInputProps(name)}
             required={required}
-            error={error}
+            error={fieldError}
         />);
 };
 

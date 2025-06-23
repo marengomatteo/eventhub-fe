@@ -1,16 +1,16 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?cu0e2n');
-  src:  url('fonts/icomoon.eot?cu0e2n#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?cu0e2n') format('truetype'),
-    url('fonts/icomoon.woff?cu0e2n') format('woff'),
-    url('fonts/icomoon.svg?cu0e2n#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?27ld4z');
+  src:  url('fonts/icomoon.eot?27ld4z#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?27ld4z') format('truetype'),
+    url('fonts/icomoon.woff?27ld4z') format('woff'),
+    url('fonts/icomoon.svg?27ld4z#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-i {
+[class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: never;
@@ -25,6 +25,24 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-home-home-svgrepo-com:before {
+  content: "\e905";
+}
+.icon-create-event:before {
+  content: "\e906";
+}
+.icon-dashboard:before {
+  content: "\e908";
+}
+.icon-upload:before {
+  content: "\e907";
+}
+.icon-search:before {
+  content: "\e903";
+}
+.icon-profile:before {
+  content: "\e904";
+}
 .icon-add:before {
   content: "\e902";
 }

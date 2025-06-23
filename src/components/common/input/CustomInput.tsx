@@ -8,11 +8,13 @@ interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   form: any;
   type?: string;
+  placeholder?: string;
+  error?: string;
 }
 
 const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(({ ...props }, ref) => {
-  const { label, required, type } = props;
-  const error = props.form.errors[props.name as string];
+  const { label, required, type, placeholder } = props;
+  const error = props.error || props.form.errors[props.name as string];
   return type == "password" ? (
     <PasswordInput
       label={label}
@@ -23,9 +25,9 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(({ ...props }
       ref={ref}
       key={props.key}
       autoComplete="nope"
-      error={error}
       {...props.form.getInputProps(props.name)}
-
+      error={error}
+      placeholder={placeholder}
     />
   ) : (
     <TextInput
@@ -36,8 +38,9 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(({ ...props }
       size="md"
       ref={ref}
       key={props.key}
-      error={error}
       {...props.form.getInputProps(props.name)}
+      error={error}
+      placeholder={placeholder}
     />
   );
 });

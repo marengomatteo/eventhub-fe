@@ -1,8 +1,9 @@
 import Ticket from "@components/ticket/Ticket";
 import Button from "@components/common/button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfilePageLayout from "@components/common/profilePageLayout/ProfilePageLayout";
-
+import { useUser } from "@context/UserContext";
+import { useRouter } from "@tanstack/react-router";
 import "./styles/profilePage.scss";
 
 const ProfilePage = () => {
@@ -41,6 +42,15 @@ const ProfilePage = () => {
             phone: "1234567890",
         }
     ]
+
+    const { user } = useUser();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!user) {
+            router.navigate({ to: "/login" });
+        }
+    }, [user, router]);
 
     return <ProfilePageLayout>
         <div className="user">

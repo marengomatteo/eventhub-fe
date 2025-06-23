@@ -18,11 +18,13 @@
         justify-content: center;
         transition: all 0.3s ease-in-out;
         border:none;
+        color: black;
+        font-size: 28px;
         &.selected{
 
             background-color: var(--accent-orange);
-            & img{
-                filter: invert(1) brightness(2);
+            & i{
+              color: white;
             }
         }
     }

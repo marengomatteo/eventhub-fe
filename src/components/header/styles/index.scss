@@ -98,13 +98,18 @@ header {
       font-size: 16px;
       font-weight: 400;
       gap: 16px;
-      & img {
+      & .arrow {
         width: 16px;
+        transition: transform 0.3s ease;
+        &.rotate{
+          transform: rotate(180deg);
+        }
       }
+
       & .profile-logo {
         width: 50px;
         height: 50px;
-        background-color: rgba($color: var(--accent-orange), $alpha: 0.2);
+        background-color: var(--accent-orange-20);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -118,6 +123,29 @@ header {
   }
 }
 
+.profile-dropdown{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  & a{
+    padding: 0;
+    color: inherit;
+    transition: color 0.3s ease;
+    &:hover{
+      color: var(--accent-orange);
+    }
+  }
+  & button{
+    padding: 0;
+    color: inherit;
+    transition: color 0.3s ease;
+    &:hover{
+      color: var(--accent-orange);
+    }
+  }
+}
 .search-overlay {
   display: none;
   position: fixed;

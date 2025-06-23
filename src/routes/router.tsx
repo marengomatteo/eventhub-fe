@@ -1,12 +1,13 @@
 import {
-  createRootRoute,
   createRoute,
   createRouter,
   Navigate,
   Outlet,
+  redirect,
+  createRootRouteWithContext,
 } from "@tanstack/react-router";
 
-import { UserProvider } from "../context/UserContext";
+import { User } from "@context/UserContext";
 
 import HomePage from "@pages/HomePage";
 import LoginPage from "@pages/LoginPage";
@@ -20,12 +21,15 @@ const NotFound = () => {
   return <Navigate to="/" />;
 };
 
-const rootRoute = createRootRoute({
-  component: () => (
-    <UserProvider>
-      <Outlet />
-    </UserProvider>
-  ),
+// Definiamo il tipo del contesto del router
+export interface RouterContext {
+  user: User | null;
+  setUser: (user: User | null) => void;
+}
+
+// Creiamo una route radice con il contesto
+const rootRoute = createRootRouteWithContext<RouterContext>()({
+  component: () => <Outlet />,
 });
 
 const indexRoute = createRoute({
@@ -38,10 +42,11 @@ const loginRoute = createRoute({
   path: "/login",
   getParentRoute: () => rootRoute,
   component: LoginPage,
-  /*   beforeLoad: () => {
-      const { user } = useUser();
-      if (user != null) throw redirect({ to: "/profile" });
-    }, */
+  beforeLoad: ({ context }) => {
+    if (context.user) {
+      throw redirect({ to: "/" });
+    }
+  },
 });
 
 const registerRoute = createRoute({
@@ -49,7 +54,6 @@ const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
   component: RegisterPage,
 });
-
 const profileRoute = createRoute({
   path: "/profile",
   getParentRoute: () => rootRoute,
@@ -70,6 +74,11 @@ const createEventRoute = createRoute({
   path: "/create-event",
   getParentRoute: () => rootRoute,
   component: CreateEventPage,
+  beforeLoad: ({ context }) => {
+    if (!context.user) {
+      throw redirect({ to: "/login" });
+    }
+  },
 });
 const notFoundRoute = createRoute({
   path: "*",
@@ -113,17 +122,20 @@ const dashboardRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
+  registerRoute,
   profileRoute,
+  ticketDetailRoute,
   createEventRoute,
   searchResultsRoute,
-  registerRoute,
   notFoundRoute,
-  ticketDetailRoute,
-  //dashboardRoute,
 ]);
 
 export const router = createRouter({
   routeTree,
+  context: {
+    user: null,
+    setUser: () => { },
+  },
 });
 
 declare module "@tanstack/react-router" {

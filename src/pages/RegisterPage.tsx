@@ -118,14 +118,16 @@ const RegisterPage = () => {
           </> : <>
             <CustomInput
               label={"Email"}
-              error={form.errors.email}
-              {...form.getInputProps("email")}
+              name="email"
+              key="email"
+              form={form}
             />
             <div>
               <CustomInput
                 type="password"
-                error={form.errors.password}
-                {...form.getInputProps("password")}
+                name="password"
+                key="password"
+                form={form}
                 label={"Password"}
               />
               <ul className="password-requirements">
@@ -138,8 +140,9 @@ const RegisterPage = () => {
             </div>
             <CustomInput
               type="password"
-              error={form.errors.confermaPassword}
-              {...form.getInputProps("confermaPassword")}
+              name="confermaPassword"
+              key="confermaPassword"
+              form={form}
               label={"Conferma Password"}
             />
           </>}

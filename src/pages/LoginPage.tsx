@@ -3,17 +3,26 @@ import logoExpanded from "@assets/logo-expanded.png";
 import CustomInput from "@components/common/input/CustomInput";
 import { useForm } from "@mantine/form";
 import Button from "../components/common/button/Button";
-import "./styles/login.scss";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "@tanstack/react-router";
+import axios from "axios";
+import { useCallback, useState } from "react";
+import { useUser } from "../context/UserContext";
+
+import "./styles/login.scss";
 
 interface FormValues {
   username: string;
   password: string;
 }
+const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$/;
 
 const LoginPage = () => {
   const router = useRouter();
+  const api = axios.create({
+    baseURL: "http://localhost:8082/user-service/authentication",
+    withCredentials: true,
+  });
 
   const form = useForm<FormValues>({
     mode: "uncontrolled",
@@ -29,12 +38,14 @@ const LoginPage = () => {
         return null;
       },
       password: (value) => {
-        console.log(value);
         if (!value) return "Password is required";
+        if (!PSW_REGEX.test(value)) return "Password non valida";
         return null;
       },
     }
   });
+
+  const [error, setError] = useState<string>("");
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -45,6 +56,37 @@ const LoginPage = () => {
   });
 
   const navigate = (to: string) => router.navigate({ to });
+  const { setUser } = useUser();
+
+  const handleLogin = useCallback(async (values: FormValues) => {
+    setError("");
+    try {
+      const response = await api.post("/signin", {
+        email: values.username,
+        password: values.password,
+      });
+      if (response.status === 200) {
+        const { data: { userDataResponse } } = response;
+        const userData = {
+          id: userDataResponse.id,
+          name: userDataResponse.name,
+          surname: userDataResponse.surname,
+          email: userDataResponse.email,
+          role: userDataResponse.role,
+        };
+        setUser(userData);
+        navigate("/");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || "Errore durante il login");
+        form.setErrors({
+          username: error.response?.data?.message,
+          password: error.response?.data?.message,
+        });
+      }
+    }
+  }, [api]);
 
 
   return (
@@ -52,9 +94,7 @@ const LoginPage = () => {
       <div className="left">
         <img src={logoExpanded} />
       </div>
-      <form className="right" onSubmit={form.onSubmit((values) => {
-        console.log("Form valid:", values);
-      })}>
+      <form className="right" onSubmit={form.onSubmit((values) => handleLogin(values))}>
         <h1>Accedi per scoprire un mondo di eventi!</h1>
         <div className="login-form">
           <CustomInput
@@ -75,6 +115,7 @@ const LoginPage = () => {
             variant="tertiary"
             label="Password dimenticata?"
           />
+          {error && <p className="error">{error}</p>}
 
           <div className="login-separator">Oppure accedi con</div>
           <div className="login-social-buttons">
