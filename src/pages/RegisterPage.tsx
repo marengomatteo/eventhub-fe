@@ -21,7 +21,7 @@ interface FormValues {
   password: string;
   confermaPassword: string;
 }
-const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!"#$%&'()*+,-./: ;<=>? @]).{8,}$/;
+const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@]).{8,}$/;
 
 const RegisterPage = () => {
   const api = axios.create({
@@ -30,6 +30,7 @@ const RegisterPage = () => {
   });
   const { setUser } = useUser();
   const [step, setStep] = useState(1);
+  const [error, setError] = useState("");
   const [passwordChecks, setPasswordChecks] = useState({
     hasUpperCase: false,
     hasLowerCase: false,
@@ -119,23 +120,21 @@ const RegisterPage = () => {
   };
 
   const handleRegister = async () => {
-    const response = await api.post("/signup", {
-      email: form.getValues().email,
-      password: form.getValues().password,
-      name: form.getValues().name,
-      surname: form.getValues().surname,
-    });
-    if (response.status === 200) {
-      const { data: { userDataResponse } } = response;
-      const userData = {
-        id: userDataResponse.id,
-        name: userDataResponse.name,
-        surname: userDataResponse.surname,
-        email: userDataResponse.email,
-        role: userDataResponse.role,
-      };
-      setUser(userData);
-      router.navigate({ to: "/" });
+    debugger;
+    try {
+      const response = await api.post("/signup", {
+        email: form.getValues().email,
+        password: form.getValues().password,
+        name: form.getValues().name,
+        surname: form.getValues().surname,
+      });
+      if (response.status === 201) {
+        router.navigate({ to: "/login" });
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || "Errore durante la registrazione");
+      }
     }
   };
 
@@ -150,6 +149,8 @@ const RegisterPage = () => {
         <form onSubmit={(e) => {
           e.preventDefault();
         }} className="login-form">
+          {error && <p className="general-error">{error}</p>}
+
           {step == 1 ? <>
             <div className={`options ${form.errors.userType ? "error" : ""}`}>
               <button type="button" className={`userOption ${form.getValues().userType === "user" ? "selected" : ""}`} onClick={() => form.setFieldValue("userType", "user")}>
@@ -193,7 +194,7 @@ const RegisterPage = () => {
                 <li className={passwordChecks.hasUpperCase ? "valid" : ""}>Una lettera maiuscola</li>
                 <li className={passwordChecks.hasLowerCase ? "valid" : ""}>Una lettera minuscola</li>
                 <li className={passwordChecks.hasNumber ? "valid" : ""}>Un numero</li>
-                <li className={passwordChecks.hasSymbol ? "valid" : ""}>Un simbolo speciale (@#$%^&+=)</li>
+                <li className={passwordChecks.hasSymbol ? "valid" : ""}>Un simbolo speciale (@#$%^&+=.)</li>
                 <li className={passwordChecks.hasMinLength ? "valid" : ""}>Minimo 8 caratteri</li>
               </ul>
             </div>

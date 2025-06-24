@@ -1,14 +1,16 @@
 .options{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    align-items: center;
     gap:16px;
+    width: fit-content;
+    margin: auto;
     & .userOption{
     cursor: pointer;
     padding: 10px;
     border-radius: 8px;
     transition: all 0.2s ease-in-out;
-    width: 160px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;

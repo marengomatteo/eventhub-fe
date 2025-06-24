@@ -15,7 +15,7 @@ interface FormValues {
   username: string;
   password: string;
 }
-const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$/;
+const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@]).{8,}$/;
 
 const LoginPage = () => {
   const router = useRouter();
