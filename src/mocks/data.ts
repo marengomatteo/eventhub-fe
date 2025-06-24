@@ -27,33 +27,17 @@ const products = [
 
 const filters = [
   {
-    name: "prova",
+    name: "concerto",
     icon: mic,
   },
   {
-    name: "prova",
+    name: "conferenza",
     icon: disco,
   },
   {
-    name: "prova",
+    name: "altro",
     icon: mic,
-  },
-  {
-    name: "prova",
-    icon: mic,
-  },
-  {
-    name: "prova",
-    icon: mic,
-  },
-  {
-    name: "prova",
-    icon: mic,
-  },
-  {
-    name: "prova",
-    icon: mic,
-  },
+  }
 ];
 const highlightEvents = [
   {

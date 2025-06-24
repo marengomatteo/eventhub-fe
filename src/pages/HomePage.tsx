@@ -5,17 +5,29 @@ import Filters from "@components/filters/Filters";
 import data from "@mocks/data";
 import EventsSection from "@components/eventsSection/EventsSection";
 import Footer from "@components/footer/Footer";
-
+import { useEffect, useState } from "react";
+import { getBaseURL } from "../utils";
+import { Event } from "../utils/types";
 const HomePage = () => {
-  const products = data.products;
   const filters = data.filters;
-  const highlightEvents = data.highlightEvents;
-  console.log(products.length);
+
+  const [products, setProducts] = useState<Event[]>([]);
+
+  /* fetch products */
+  const getProducts = () => {
+    getBaseURL("event").get("/list").then((response) => {
+      /* multiply response data to simulate more events */
+      setProducts([...response.data, ...response.data, ...response.data, ...response.data, ...response.data]);
+    });
+  }
+  useEffect(() => {
+    getProducts();
+  }, []);
   return (
     <>
       <Header showSearchBar={true} />
       {products?.[0] && (
-        <img className="highlight-product" src={products[0].image} />
+        <img className="highlight-product" src={products[0].image || "https://picsum.photos/300/200"} />
       )}
       {products?.length > 1 && (
         <div className="carousel-container">
@@ -34,7 +46,7 @@ const HomePage = () => {
                 return (
                   <Carousel.Slide key={index}>
                     <div className="carousel-slide">
-                      <img src={product.image} alt={`Product ${index + 1}`} />
+                      <img src={product.image || "https://picsum.photos/300/200"} alt={`Product ${index + 1}`} />
                     </div>
                   </Carousel.Slide>
                 );
@@ -46,7 +58,7 @@ const HomePage = () => {
       <Filters filters={filters} />
       <EventsSection
         title="Eventi in evidenza"
-        highlightEvents={highlightEvents}
+        highlightEvents={products}
       />
       <Footer />
     </>

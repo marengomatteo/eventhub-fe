@@ -5,29 +5,30 @@ import "./styles/index.scss";
 interface EventsSectionProps {
   title: string;
   highlightEvents: {
-    name: string;
+    eventName: string;
     image: string;
-    date: string;
-    locationName: string;
+    startDate: string;
+    location: string;
   }[];
 }
 
 const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
+  console.log("highlight", highlightEvents);
   return (
     <div className="highlightEvents-wrapper">
       <h2>{title}</h2>
       <div className="events-container">
         {highlightEvents.map((event) => (
-          <div className="event" key={event.name}>
+          <div className="event" key={event.eventName}>
             <div className="event-image">
-              <img src={event.image} alt={event.name} />
+              <img src={event.image || "https://picsum.photos/300/200"} alt={event.eventName} />
               <div className="title">
-                <span>{event.name}</span>
+                <span>{event.eventName}</span>
               </div>
             </div>
             <div className="event-details">
-              <div className="event-location">{event.locationName}</div>
-              <div className="event-date">{event.date}</div>
+              <div className="event-location">{event.location}</div>
+              <div className="event-date">{event.startDate}</div>
             </div>
           </div>
         ))}
