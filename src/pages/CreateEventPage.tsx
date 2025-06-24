@@ -3,13 +3,16 @@ import CustomDropZone from '@components/customDropZone/CustomDropZone';
 import Header from '@components/header/Header';
 import SideBar from '@components/sideBar/SideBar';
 import { useForm } from '@mantine/form';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import locationIcon from '@assets/icons/pin.png';
 import CustomSelect from '@components/common/input/CustomSelect';
 import CustomTextArea from '@components/common/input/CustomTextArea';
 import DateTimeInput from '@components/common/input/DateTimeInput';
 import { ActionIcon, Button, NumberInput } from '@mantine/core';
 import "./styles/createEvent.scss";
+import axios from 'axios';
+import { useRouter } from '@tanstack/react-router';
+import { getBaseURL } from '../utils';
 
 
 
@@ -393,6 +396,25 @@ const CreateEventPage = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [filesError, setFilesError] = useState(false);
     const [step, setStep] = useState(1);
+    const [error, setError] = useState<string>("");
+
+    const router = useRouter();
+
+    const api = getBaseURL("event");
+
+    const handlePublishEvent = useCallback(async (values: any) => {
+        try {
+            const response = await api.post("/events", values);
+            if (response.status === 200) {
+                router.navigate({ to: "/" });
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                setError(error.response?.data?.message || "Errore durante la pubblicazione");
+            }
+        }
+    }, [api]);
+
     return (
         <>
             <Header />
@@ -424,6 +446,7 @@ const CreateEventPage = () => {
                             console.log(form.errors)
                             setStep((prev) => prev + 1);
                         } else {
+                            handlePublishEvent(values);
                             console.log("API conferma", values);
                         }
                     })}>
@@ -439,7 +462,7 @@ const CreateEventPage = () => {
                             <>
                                 <div className='blocks'>
                                     <EventAgendaBlock form={form} />
-                                    <Button className="submit-button" type='submit' variant="primary" > Avanti </Button>
+                                    <Button className="submit-button" type='submit' variant="primary" > Pubblica </Button>
                                 </div>
                             </>
                         }

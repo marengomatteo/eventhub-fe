@@ -49,8 +49,12 @@ const LoginPage = () => {
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
-
-      console.log(response);
+      if (response) {
+        const res = await api.post("/google", response);
+        const userData = res.data.userDataResponse;
+        setUser(userData);
+        navigate("/");
+      }
     },
     flow: 'auth-code',
   });
@@ -67,13 +71,7 @@ const LoginPage = () => {
       });
       if (response.status === 200) {
         const { data: { userDataResponse } } = response;
-        const userData = {
-          id: userDataResponse.id,
-          name: userDataResponse.name,
-          surname: userDataResponse.surname,
-          email: userDataResponse.email,
-          role: userDataResponse.role,
-        };
+        const userData = userDataResponse;
         setUser(userData);
         navigate("/");
       }

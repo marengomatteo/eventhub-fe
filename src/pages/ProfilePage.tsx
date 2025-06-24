@@ -4,44 +4,16 @@ import { useEffect, useState } from "react";
 import ProfilePageLayout from "@components/common/profilePageLayout/ProfilePageLayout";
 import { useUser } from "@context/UserContext";
 import { useRouter } from "@tanstack/react-router";
+import { getBaseURL } from "../utils";
+import { Order } from "@utils/types";
+
 import "./styles/profilePage.scss";
+
 
 const ProfilePage = () => {
     const [showPreviousOrders, setShowPreviousOrders] = useState(false);
-    const orders = [
-        {
-            orderId: "1320242",
-            orderDate: "2025-06-17",
-            amount: 100,
-            eventName: "Evento 1",
-            eventDate: "giovedì, 2025-06-17",
-            eventTime: "19:00",
-            quantity: 1,
-            imageUrl: "https://picsum.photos/200",
-            locationName: "Palalpitour Torino",
-            location: "Palalpitour Torino - via Piazza Italia, 1",
-            name: "Marco",
-            surname: "Marconi",
-            email: "marco.marconi@gmail.com",
-            phone: "1234567890",
-        },
-        {
-            orderId: "1320240",
-            orderDate: "2025-06-17",
-            amount: 100,
-            eventName: "Evento 2",
-            eventDate: "giovedì, 2025-06-17",
-            eventTime: "19:00",
-            quantity: 1,
-            imageUrl: "https://picsum.photos/200",
-            locationName: "Palalpitour Torino",
-            location: "Palalpitour Torino - via Piazza Italia, 1",
-            name: "Marco",
-            surname: "Marconi",
-            email: "marco.marconi@gmail.com",
-            phone: "1234567890",
-        }
-    ]
+    const [orders, setOrders] = useState([]);
+
 
     const { user } = useUser();
     const router = useRouter();
@@ -52,6 +24,24 @@ const ProfilePage = () => {
         }
     }, [user, router]);
 
+
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+        const fetchOrders = async () => {
+            try {
+                const response = await getBaseURL("ticket").get(`/${user.id}`);
+                if (response.status === 200) {
+                    setOrders(response.data.sort((a: Order, b: Order) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()));
+                }
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            }
+        };
+        fetchOrders();
+    }, [user]);
+
     return <ProfilePageLayout>
         <div className="user">
             <div className="user-info">MM</div>
@@ -61,9 +51,9 @@ const ProfilePage = () => {
             </div>
         </div>
         <h2>Il tuo prossimo evento </h2>
-        <Ticket order={orders[0]} />
-        {!showPreviousOrders && <Button className="seeMore" variant="secondary" label="Vedi ordini precedenti" onClick={() => setShowPreviousOrders(true)} />}
-        {showPreviousOrders && (
+        {orders.length > 0 ? <Ticket order={orders[0]} /> : <div>Non hai ancora acquistato biglietti</div>}
+        {!showPreviousOrders && orders.length > 1 && <Button className="seeMore" variant="secondary" label="Vedi ordini precedenti" onClick={() => setShowPreviousOrders(true)} />}
+        {showPreviousOrders && orders.length > 1 && (
             <div className="previous-orders">
                 {orders.slice(1).map((order, index) => (
                     <Ticket key={index} order={order} />

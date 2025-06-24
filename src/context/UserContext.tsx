@@ -58,10 +58,6 @@ export const useUser = (): UserContextType => {
   return context;
 };
 
-export const isUserAdmin = (): boolean => {
-  const { user } = useUser();
-  return user?.role === "ADMIN";
-};
 
 export const isAuthenticated = (): boolean => {
   if (typeof window !== 'undefined') {

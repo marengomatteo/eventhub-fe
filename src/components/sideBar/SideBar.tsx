@@ -1,16 +1,20 @@
-import { isUserAdmin } from "@context/UserContext";
 import { FC, ReactNode, useMemo } from "react";
+
+
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
+import { useUser } from "../../context/UserContext";
 
 /* icons */
 import chevron from "@assets/icons/chevron.svg";
 
 import "./styles/index.scss";
-import { Link, useRouter, useRouterState } from "@tanstack/react-router";
-
 
 const SideBar: FC<{ showExpanded?: boolean, children?: ReactNode }> = ({ showExpanded = false, children }) => {
     const router = useRouter();
     const pathname = useRouterState({ select: (s) => s.location.pathname });
+    const { user } = useUser();
+    const isAdmin = user?.role === "ADMIN";
+
     const items = useMemo(() => [{
         icon: "icon-home",
         id: "Home",
@@ -21,17 +25,17 @@ const SideBar: FC<{ showExpanded?: boolean, children?: ReactNode }> = ({ showExp
         id: "profile",
         refs: ["/profile", "/details/"]
     },
-    isUserAdmin() ? {
+    isAdmin ? {
         icon: "icon-dashboard",
         id: "dashboard",
         refs: ["/dashboard"]
     } : null,
-    isUserAdmin() ? {
+    isAdmin ? {
         icon: "icon-create-event",
         id: "create-event",
         refs: ["/create-event"]
     } : null
-    ], [isUserAdmin()]);
+    ], [isAdmin]);
 
 
     return <div className="sidebar-wrapper">

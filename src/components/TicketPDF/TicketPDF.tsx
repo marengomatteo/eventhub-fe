@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
 });
 
 export function TicketPDF({ biglietto }: { biglietto: any }) {
-    const mapUrl = biglietto.locationName
+    const mapUrl = biglietto.location
         ? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
-            biglietto.locationName,
+            biglietto.location,
         )}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C${encodeURIComponent(
-            biglietto.locationName,
+            biglietto.location,
         )}&key=AIzaSyChk89dukymtLY_M7uYS3ZdRcu9z9p9-us`
         : null;
 
@@ -124,11 +124,7 @@ export function TicketPDF({ biglietto }: { biglietto: any }) {
                     <View style={styles.orderInfoRow}>
                         <View>
                             <Text style={styles.smallText}>Ordine</Text>
-                            <Text style={styles.boldText}>#{biglietto.orderId}</Text>
-                        </View>
-                        <View>
-                            <Text style={[styles.smallText, { textAlign: 'right' }]}>Importo</Text>
-                            <Text style={[styles.boldText, { textAlign: 'right' }]}>{biglietto.amount}€</Text>
+                            <Text style={styles.boldText}>#{biglietto.id}</Text>
                         </View>
                     </View>
 
@@ -144,10 +140,10 @@ export function TicketPDF({ biglietto }: { biglietto: any }) {
                     {/* Event Details */}
                     <View style={styles.eventDetails}>
                         <Text style={{ fontWeight: 500, marginBottom: 4 }}>
-                            {biglietto.quantity} x {biglietto.eventName}
+                            1x {biglietto.eventName}
                         </Text>
                         <Text style={{ color: '#8795a4', fontSize: 12, marginBottom: 16 }}>
-                            {biglietto.eventDate} • {biglietto.eventTime}
+                            {biglietto.startDate} • {biglietto.startTime}
                         </Text>
 
                         {/* Location */}
@@ -155,12 +151,12 @@ export function TicketPDF({ biglietto }: { biglietto: any }) {
                             <View style={styles.locationRow}>
                                 <Image src={locationIcon} style={{ width: 12, height: 12, marginRight: 4 }} />
                                 <Text style={styles.locationText}>
-                                    {biglietto.locationName || 'Luogo non specificato'}
+                                    {biglietto.location || 'Luogo non specificato'}
                                 </Text>
                             </View>
-                            {biglietto.address && (
+                            {biglietto.location && (
                                 <Text style={{ color: '#8795a4', fontSize: 12, marginLeft: 16, marginBottom: 8 }}>
-                                    {biglietto.address}
+                                    {biglietto.location}
                                 </Text>
                             )}
                             {mapUrl ? (
@@ -177,7 +173,6 @@ export function TicketPDF({ biglietto }: { biglietto: any }) {
                                 <Text style={styles.personalDataText}>Nome: {biglietto.name}</Text>
                                 <Text style={styles.personalDataText}>Cognome: {biglietto.surname}</Text>
                                 <Text style={styles.personalDataText}>Email: {biglietto.email}</Text>
-                                <Text style={styles.personalDataText}>Telefono: {biglietto.phone}</Text>
                             </View>
                         </View>
                         {/* Barcode placeholder */}

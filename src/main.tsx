@@ -12,9 +12,7 @@ import "./index.scss";
 import "./variables.css";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <GoogleOAuthProvider clientId="690276829654-98b2qel0npcvo4p6ipcdhnijenvuui7o.apps.googleusercontent.com">
-      <App />
-    </GoogleOAuthProvider>
-  </StrictMode>
+  <GoogleOAuthProvider clientId="690276829654-98b2qel0npcvo4p6ipcdhnijenvuui7o.apps.googleusercontent.com">
+    <App />
+  </GoogleOAuthProvider>
 );

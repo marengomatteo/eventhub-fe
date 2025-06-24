@@ -65,7 +65,7 @@ const ticketDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
   component: TicketDetailPage,
   beforeLoad: ({ params }) => {
-    if (!/^\d+$/.test(params.ticketId)) {
+    if (!/^[a-zA-Z0-9]+$/.test(params.ticketId)) {
       throw new Error("Ticket id non valido");
     }
   },
