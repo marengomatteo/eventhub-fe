@@ -11,6 +11,18 @@
     align-items: center;
     flex-direction: column;
     padding-top: 20px;
+    &.selected{
+      & .filter-icon{
+        background-color: var(--accent-orange);
+        color: white;
+        & img{
+          filter: brightness(0) invert(1);
+        }
+        &:hover{
+          background-color: var(--accent-orange-hover);
+        }
+      }
+    }
     & .filter-icon {
       position: relative;
       display: flex;

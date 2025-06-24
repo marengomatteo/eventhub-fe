@@ -1,4 +1,5 @@
-import { createContext, useState, useContext, ReactNode, FC } from "react";
+import { createContext, useState, useContext, ReactNode, FC, useEffect } from "react";
+import { getBaseURL } from "../utils";
 
 export interface User {
   id: string;
@@ -14,7 +15,6 @@ export interface UserContextType {
   logout: () => void;
 }
 
-const USER_STORAGE_KEY = 'eventhub_user';
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 interface UserProviderProps {
@@ -22,21 +22,22 @@ interface UserProviderProps {
 }
 
 export const UserProvider: FC<UserProviderProps> = ({ children }) => {
-  const [user, setUserState] = useState<User | null>(() => {
-    if (typeof window !== 'undefined') {
-      const storedUser = sessionStorage.getItem(USER_STORAGE_KEY);
-      return storedUser ? JSON.parse(storedUser) : null;
-    }
-    return null;
-  });
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getBaseURL("authentication").get("/me");
+      setUserState(userData.data);
+    };
+    fetchUser();
+  }, []);
+
+  const [user, setUserState] = useState<User | null>(
+    null
+  );
+
 
   const setUser = (userData: User | null) => {
     setUserState(userData);
-    if (userData) {
-      sessionStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
-    } else {
-      sessionStorage.removeItem(USER_STORAGE_KEY);
-    }
+
   };
 
   const logout = () => {
@@ -56,12 +57,4 @@ export const useUser = (): UserContextType => {
     throw new Error("useUser deve essere usato dentro UserProvider");
   }
   return context;
-};
-
-
-export const isAuthenticated = (): boolean => {
-  if (typeof window !== 'undefined') {
-    return !!sessionStorage.getItem(USER_STORAGE_KEY);
-  }
-  return false;
 };

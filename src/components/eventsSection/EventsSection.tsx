@@ -14,10 +14,10 @@ interface EventsSectionProps {
 }
 
 const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
-
+  console.log(highlightEvents);
   const router = useRouter();
 
-  return (
+  return highlightEvents.length > 0 ? (
     <div className="highlightEvents-wrapper">
       <h2>{title}</h2>
       <div className="events-container">
@@ -37,7 +37,14 @@ const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+    :
+    <div className="highlightEvents-wrapper">
+      <h2>{title}</h2>
+      <div className="events-container">
+        <p>Nessun evento disponibile</p>
+      </div>
+    </div>
+}
 
 export default EventsSection;

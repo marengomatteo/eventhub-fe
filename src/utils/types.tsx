@@ -16,4 +16,5 @@ export interface Event {
     endDate: string;
     startTime: string;
     description?: string;
+    eventType?: string;
 }

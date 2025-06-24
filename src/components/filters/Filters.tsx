@@ -1,24 +1,26 @@
 import { FC } from "react";
 
 import "./styles/index.scss";
-import { Carousel } from "@mantine/carousel";
+
 interface FilterProps {
   filters: {
     name: string;
     icon: string;
   }[];
+  selectedFilter: string;
+  handleFilterClick: (filter: string) => void;
 }
 
-const Filters: FC<FilterProps> = ({ filters }) => {
+const Filters: FC<FilterProps> = ({ filters, handleFilterClick, selectedFilter }) => {
   return (
     <div className="filters-wrapper">
       {filters.map(({ name, icon }) => (
-        <div className="filter" key={name}>
+        <button className={selectedFilter === name ? "filter selected" : "filter"} key={name} onClick={() => handleFilterClick(name)}>
           <div className="filter-icon">
             <img src={icon} />
           </div>
           <span>{name}</span>
-        </div>
+        </button>
       ))}
     </div>
   );

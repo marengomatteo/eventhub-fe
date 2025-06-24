@@ -12,6 +12,7 @@ const HomePage = () => {
   const filters = data.filters;
 
   const [products, setProducts] = useState<Event[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<string>("");
 
   /* fetch products */
   const getProducts = () => {
@@ -23,6 +24,10 @@ const HomePage = () => {
   useEffect(() => {
     getProducts();
   }, []);
+
+  const handleFilterClick = (filter: string) => {
+    setSelectedFilter((prev) => (prev === filter ? "" : filter));
+  }
   return (
     <>
       <Header showSearchBar={true} />
@@ -53,10 +58,10 @@ const HomePage = () => {
           </Carousel>
         </div>
       )}
-      <Filters filters={filters} />
+      <Filters filters={filters} handleFilterClick={handleFilterClick} selectedFilter={selectedFilter} />
       <EventsSection
         title="Eventi in evidenza"
-        highlightEvents={products}
+        highlightEvents={selectedFilter ? products.filter((product) => product.eventType === selectedFilter) : products}
       />
       <Footer />
     </>
