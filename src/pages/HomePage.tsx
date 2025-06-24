@@ -35,10 +35,8 @@ const HomePage = () => {
             slideSize={"auto"}
             height="200"
             slideGap="0"
-            align="start"
             controlsOffset="md"
             controlSize={28}
-            loop
             className="products-carousel"
           >
             {products.map((product, index) => {

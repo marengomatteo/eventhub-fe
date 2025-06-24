@@ -2,7 +2,7 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { getPasswordRequirements } from "../utils";
-import axios from "axios";
+import { getBaseURL } from "../utils";
 import { useUser } from "../context/UserContext";
 
 import Button from "../components/common/button/Button";
@@ -10,6 +10,8 @@ import CustomInput from "@components/common/input/CustomInput";
 
 import logoExpanded from "@assets/logo-expanded.png";
 import backArrow from "@assets/icons/chevron.svg";
+
+import axios from "axios";
 
 import "./styles/registerPage.scss";
 
@@ -24,11 +26,6 @@ interface FormValues {
 const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@]).{8,}$/;
 
 const RegisterPage = () => {
-  const api = axios.create({
-    baseURL: "http://localhost:8082/user-service/authentication",
-    withCredentials: true,
-  });
-  const { setUser } = useUser();
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [passwordChecks, setPasswordChecks] = useState({
@@ -48,7 +45,7 @@ const RegisterPage = () => {
       password: "",
       confermaPassword: "",
     },
-    onValuesChange(values, previous) {
+    onValuesChange(values) {
       const passwordChecks = getPasswordRequirements(values.password);
       setPasswordChecks(passwordChecks);
     },
@@ -122,7 +119,7 @@ const RegisterPage = () => {
   const handleRegister = async () => {
     debugger;
     try {
-      const response = await api.post("/signup", {
+      const response = await getBaseURL("authentication").post("/signup", {
         email: form.getValues().email,
         password: form.getValues().password,
         name: form.getValues().name,

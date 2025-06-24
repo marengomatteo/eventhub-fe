@@ -16,6 +16,7 @@ import ProfilePage from "@pages/ProfilePage";
 import CreateEventPage from "@pages/CreateEventPage";
 import RegisterPage from "@pages/RegisterPage";
 import TicketDetailPage from "@pages/TicketDetailPage";
+import EventDetailPage from "@pages/EventDetailPage";
 
 const NotFound = () => {
   return <Navigate to="/" />;
@@ -60,6 +61,16 @@ const profileRoute = createRoute({
   component: ProfilePage,
 });
 
+const eventDetailRoute = createRoute({
+  path: "/event/$eventId",
+  getParentRoute: () => rootRoute,
+  component: EventDetailPage,
+  beforeLoad: ({ params }) => {
+    if (!/^[a-zA-Z0-9]+$/.test(params.eventId)) {
+      throw new Error("Event id non valido");
+    }
+  },
+});
 const ticketDetailRoute = createRoute({
   path: "/details/$ticketId",
   getParentRoute: () => rootRoute,
@@ -124,6 +135,7 @@ const routeTree = rootRoute.addChildren([
   loginRoute,
   registerRoute,
   profileRoute,
+  eventDetailRoute,
   ticketDetailRoute,
   createEventRoute,
   searchResultsRoute,

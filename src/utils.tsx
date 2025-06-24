@@ -20,6 +20,11 @@ export const getBaseURL = (type: string) => {
                 baseURL: "http://localhost:8082/user-service/users",
                 withCredentials: true
             });
+        case "authentication":
+            return axios.create({
+                baseURL: "http://localhost:8082/user-service/authentication",
+                withCredentials: true
+            });
         case "ticket":
             return axios.create({
                 baseURL: "http://localhost:8082/ticket-service/ticket",
