@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?27ld4z');
-  src:  url('fonts/icomoon.eot?27ld4z#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?27ld4z') format('truetype'),
-    url('fonts/icomoon.woff?27ld4z') format('woff'),
-    url('fonts/icomoon.svg?27ld4z#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?y88wpq');
+  src:  url('fonts/icomoon.eot?y88wpq#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?y88wpq') format('truetype'),
+    url('fonts/icomoon.woff?y88wpq') format('woff'),
+    url('fonts/icomoon.svg?y88wpq#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-trash:before {
+  content: "\e909";
+}
 .icon-home-home-svgrepo-com:before {
   content: "\e905";
 }

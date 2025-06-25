@@ -225,11 +225,12 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                             <h4>Sessione {index + 1}</h4>
                             {sessions.length > 1 && (
                                 <ActionIcon
+                                    className='delete-icon'
                                     color="red"
                                     onClick={() => removeSession(index)}
                                     variant="subtle"
                                 >
-                                    {/* <IconTrash size={16} /> */}
+                                    <i className='icon-trash'></i>
                                 </ActionIcon>
                             )}
                         </div>
@@ -460,7 +461,7 @@ const CreateEventPage = () => {
     });
     const [files, setFiles] = useState<File[]>([]);
     const [filesError, setFilesError] = useState(false);
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [error, setError] = useState<string>("");
     const [pageLoading, setPageLoading] = useState(false);
 

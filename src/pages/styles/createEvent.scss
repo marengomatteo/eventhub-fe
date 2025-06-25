@@ -270,6 +270,11 @@ form{
         padding-bottom: 12px;
         border-bottom: 1px solid #eee;
 
+        .delete-icon i{
+            color: red;
+            cursor: pointer;
+            font-size: 24px;
+        }
         h4 {
             margin: 0;
             font-size: 16px;
