@@ -1,23 +1,20 @@
+import { User } from "@context/UserContext";
+import CreateEventPage from "@pages/CreateEventPage";
+import EventDashboardPage from "@pages/EventDashboardPage";
+import EventDetailPage from "@pages/EventDetailPage";
+import HomePage from "@pages/HomePage";
+import LoginPage from "@pages/LoginPage";
+import ProfilePage from "@pages/ProfilePage";
+import RegisterPage from "@pages/RegisterPage";
+import SearchResultsPage from "@pages/SearchResultsPages";
+import TicketDetailPage from "@pages/TicketDetailPage";
 import {
+  createRootRouteWithContext,
   createRoute,
   createRouter,
   Navigate,
   Outlet,
-  redirect,
-  createRootRouteWithContext,
 } from "@tanstack/react-router";
-
-import { User } from "@context/UserContext";
-
-import HomePage from "@pages/HomePage";
-import LoginPage from "@pages/LoginPage";
-import SearchResultsPage from "@pages/SearchResultsPages";
-import ProfilePage from "@pages/ProfilePage";
-import CreateEventPage from "@pages/CreateEventPage";
-import RegisterPage from "@pages/RegisterPage";
-import TicketDetailPage from "@pages/TicketDetailPage";
-import EventDetailPage from "@pages/EventDetailPage";
-import EventDashboardPage from "@pages/EventDashboardPage";
 
 const NotFound = () => {
   return <Navigate to="/" />;
@@ -89,7 +86,6 @@ const eventDashboardRoute = createRoute({
   path: "/dashboard/events/$eventId",
   getParentRoute: () => rootRoute,
   component: EventDashboardPage,
-
 });
 
 const notFoundRoute = createRoute({
@@ -115,22 +111,7 @@ const searchResultsRoute = createRoute({
           : undefined,
     };
   },
-  /*   beforeLoad: () => {
-    const { user } = useUser();
-    if (user != null) throw redirect({ to: "/dashboard" });
-  }, */
 });
-/* 
-const dashboardRoute = createRoute({
-  path: "/dashboard",
-  getParentRoute: () => rootRoute,
-  component: Dashboard,
-  beforeLoad: () => {
-    const { authState } = useUser();
-    if (authState !== "logged") throw redirect({ to: "/login" });
-  },
-});
- */
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
@@ -148,7 +129,7 @@ export const router = createRouter({
   routeTree,
   context: {
     user: null,
-    setUser: () => { },
+    setUser: () => {},
     isLoading: false,
   },
 });
