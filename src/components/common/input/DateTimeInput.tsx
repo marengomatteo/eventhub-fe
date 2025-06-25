@@ -7,10 +7,11 @@ interface DateTimeInputProps {
     key: string;
     form: any;
     error?: string;
+    minDate?: Date;
 }
 
 const DateTimeInput = (props: DateTimeInputProps) => {
-    const { label, required, name, form, error } = props;
+    const { label, required, name, form, error, minDate } = props;
     const fieldError = error || form.errors[name];
 
     return (
@@ -23,6 +24,7 @@ const DateTimeInput = (props: DateTimeInputProps) => {
             required={required}
             {...form.getInputProps(name)}
             error={fieldError}
+            minDate={minDate}
         />
     );
 };

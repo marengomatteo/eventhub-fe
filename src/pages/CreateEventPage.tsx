@@ -161,6 +161,7 @@ const EventLocationBlock = ({ form }: { form: any }) => {
                     key={form.key("startDate")}
                     label="Data inizio"
                     form={form}
+                    minDate={new Date()}
                     required
                 />
             </div>
@@ -171,6 +172,7 @@ const EventLocationBlock = ({ form }: { form: any }) => {
                         key={form.key("endDate")}
                         label="Data fine"
                         form={form}
+                        minDate={new Date()}
                     />
                 </div>
             )}
@@ -242,7 +244,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                                 required
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="form-row">
                             <CustomInput
                                 name={`agenda.${index}.speaker`}
                                 key={form.key(`agenda.${index}.speaker`)}
@@ -251,6 +253,40 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                                 form={form}
                                 error={agendaErrors[index]?.speaker}
                                 required
+                            />
+                            <CustomInput
+                                name={`agenda.${index}.speakerSurname`}
+                                key={form.key(`agenda.${index}.speakerSurname`)}
+                                label="Cognome speaker/performer"
+                                placeholder="Inserisci cognome speaker/performer"
+                                form={form}
+                                error={agendaErrors[index]?.speakerSurname}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <CustomInput
+                                name={`agenda.${index}.email`}
+                                key={form.key(`agenda.${index}.email`)}
+                                label="Email speaker/performer"
+                                placeholder="Inserisci email speaker/performer"
+                                form={form}
+                                error={agendaErrors[index]?.email}
+                            />
+                            <CustomInput
+                                name={`agenda.${index}.bio`}
+                                key={form.key(`agenda.${index}.bio`)}
+                                label="Bio speaker/performer"
+                                placeholder="Inserisci bio speaker/performer"
+                                form={form}
+                                error={agendaErrors[index]?.bio}
+                            />
+                            <CustomInput
+                                name={`agenda.${index}.company`}
+                                key={form.key(`agenda.${index}.company`)}
+                                label="Company speaker/performer"
+                                placeholder="Inserisci company speaker/performer"
+                                form={form}
+                                error={agendaErrors[index]?.company}
                             />
                         </div>
                         <div className="form-group">
@@ -271,6 +307,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                                     key={form.key(`agenda.${index}.startTime`)}
                                     label="Ora inizio"
                                     form={form}
+                                    minDate={new Date()}
                                     error={agendaErrors[index]?.startTime}
                                     required
                                 />
@@ -281,6 +318,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                                     key={form.key(`agenda.${index}.endTime`)}
                                     label="Ora fine"
                                     form={form}
+                                    minDate={new Date()}
                                     error={agendaErrors[index]?.endTime}
                                     required
                                 />
@@ -314,6 +352,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
 };
 
 const CreateEventPage = () => {
+    const emailRegex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
     const form = useForm({
         initialValues: {
             title: '',
@@ -330,6 +369,7 @@ const CreateEventPage = () => {
             const errors: Record<string, string> = {};
             console.log("validation", values.startDate, values.endDate, (values.agenda[0] as any)?.startTime);
             console.log(files, form.getValues());
+            setFilesError(false);
             if (files.length === 0) {
                 setFilesError(true);
 
@@ -368,6 +408,18 @@ const CreateEventPage = () => {
                     if (!session.speaker) {
                         sessionErrors.speaker = 'Speaker/Performer è obbligatorio';
                     }
+                    if (!session.email) {
+                        sessionErrors.email = 'Email speaker/performer è obbligatoria';
+                    }
+                    if (!emailRegex.test(session.email)) {
+                        sessionErrors.email = 'Email speaker/performer non valida';
+                    }
+                    if (!session.bio) {
+                        sessionErrors.bio = 'Bio speaker/performer è obbligatoria';
+                    }
+                    if (!session.company) {
+                        sessionErrors.company = 'Company speaker/performer è obbligatoria';
+                    }
                     if (!session.location) {
                         sessionErrors.location = 'Luogo è obbligatorio';
                     }
@@ -380,6 +432,18 @@ const CreateEventPage = () => {
                     if (!session.endTime) {
                         sessionErrors.endTime = 'Ora fine è obbligatoria';
                     }
+                    debugger;
+                    if (new Date(session.startTime) > new Date(session.endTime)) {
+                        sessionErrors.startTime = 'Ora inizio deve essere inferiore a ora fine';
+                    }
+                    if (values.startDate && new Date(session.startTime) < new Date(values.startDate)) {
+                        sessionErrors.startTime = 'Ora inizio deve essere superiore a data inizio evento';
+                    }
+                    const endDate = values.endDate ? new Date(values.endDate) : new Date(values.startDate!);
+                    if (endDate && new Date(session.endTime) > endDate) {
+                        sessionErrors.endTime = 'Ora fine deve essere inferiore a data fine evento';
+                    }
+
 
                     if (Object.keys(sessionErrors).length > 0) {
                         agendaErrors[index] = sessionErrors;
@@ -483,9 +547,13 @@ const CreateEventPage = () => {
                         {timelineItems.map((item, i) => {
                             const isSelected = step - 1 == i;
                             return (
-                                <div key={i} className={`timeline-item ${isSelected ? "selected" : ""}`}>
+                                <button type='button' onClick={() => {
+                                    if (step == 2) {
+                                        setStep(i + 1)
+                                    }
+                                }} key={i} className={`timeline-item ${isSelected ? "selected" : ""}`}>
                                     <p>{item.title}</p>
-                                </div>
+                                </button>
                             );
                         })}
                     </div>
@@ -500,12 +568,14 @@ const CreateEventPage = () => {
                         )
                     }
                     <form onSubmit={form.onSubmit((values) => {
-                        if (step == 1) {
+                        debugger;
+                        if (step == 1 && !filesError) {
                             console.log(form.errors)
                             setStep((prev) => prev + 1);
-                        } else {
+                        } else if (step == 2 && Object.keys(form.errors).length == 0) {
                             handlePublishEvent(values);
                         }
+                        debugger;
                     })}>
                         {step == 1 ? <>
                             <CustomDropZone required error={filesError} files={files} setFiles={(files: File[]) => setFiles(files)} />
