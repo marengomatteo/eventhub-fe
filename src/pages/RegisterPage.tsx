@@ -116,7 +116,6 @@ const RegisterPage = () => {
   };
 
   const handleRegister = async () => {
-    debugger;
     try {
       const response = await getBaseURL("authentication").post("/signup", {
         email: form.getValues().email,

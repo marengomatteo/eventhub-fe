@@ -433,7 +433,6 @@ const CreateEventPage = () => {
                     if (!session.endTime) {
                         sessionErrors.endTime = 'Ora fine è obbligatoria';
                     }
-                    debugger;
                     if (new Date(session.startTime) > new Date(session.endTime)) {
                         sessionErrors.startTime = 'Ora inizio deve essere inferiore a ora fine';
                     }
@@ -569,14 +568,12 @@ const CreateEventPage = () => {
                         )
                     }
                     <form onSubmit={form.onSubmit((values) => {
-                        debugger;
                         if (step == 1 && !filesError) {
                             console.log(form.errors)
                             setStep((prev) => prev + 1);
                         } else if (step == 2 && Object.keys(form.errors).length == 0) {
                             handlePublishEvent(values);
                         }
-                        debugger;
                     })}>
                         {step == 1 ? <>
                             <CustomDropZone required error={filesError} files={files} setFiles={(files: File[]) => setFiles(files)} />
