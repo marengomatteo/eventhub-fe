@@ -17,6 +17,7 @@ import CreateEventPage from "@pages/CreateEventPage";
 import RegisterPage from "@pages/RegisterPage";
 import TicketDetailPage from "@pages/TicketDetailPage";
 import EventDetailPage from "@pages/EventDetailPage";
+import EventDashboardPage from "@pages/EventDashboardPage";
 
 const NotFound = () => {
   return <Navigate to="/" />;
@@ -26,6 +27,7 @@ const NotFound = () => {
 export interface RouterContext {
   user: User | null;
   setUser: (user: User | null) => void;
+  isLoading: boolean;
 }
 
 // Creiamo una route radice con il contesto
@@ -43,11 +45,6 @@ const loginRoute = createRoute({
   path: "/login",
   getParentRoute: () => rootRoute,
   component: LoginPage,
-  beforeLoad: ({ context }) => {
-    if (context.user) {
-      throw redirect({ to: "/" });
-    }
-  },
 });
 
 const registerRoute = createRoute({
@@ -81,16 +78,20 @@ const ticketDetailRoute = createRoute({
     }
   },
 });
+
 const createEventRoute = createRoute({
   path: "/create-event",
   getParentRoute: () => rootRoute,
   component: CreateEventPage,
-  beforeLoad: ({ context }) => {
-    if (!context.user) {
-      throw redirect({ to: "/login" });
-    }
-  },
 });
+
+const eventDashboardRoute = createRoute({
+  path: "/dashboard/events/$eventId",
+  getParentRoute: () => rootRoute,
+  component: EventDashboardPage,
+
+});
+
 const notFoundRoute = createRoute({
   path: "*",
   getParentRoute: () => rootRoute,
@@ -138,6 +139,7 @@ const routeTree = rootRoute.addChildren([
   eventDetailRoute,
   ticketDetailRoute,
   createEventRoute,
+  eventDashboardRoute,
   searchResultsRoute,
   notFoundRoute,
 ]);
@@ -147,6 +149,7 @@ export const router = createRouter({
   context: {
     user: null,
     setUser: () => { },
+    isLoading: false,
   },
 });
 

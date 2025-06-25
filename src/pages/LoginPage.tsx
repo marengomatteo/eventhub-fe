@@ -6,7 +6,7 @@ import Button from "../components/common/button/Button";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "@tanstack/react-router";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 
 import "./styles/login.scss";
@@ -46,6 +46,13 @@ const LoginPage = () => {
   });
 
   const [error, setError] = useState<string>("");
+  const { setUser, user, isLoading } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, isLoading]);
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -60,7 +67,6 @@ const LoginPage = () => {
   });
 
   const navigate = (to: string) => router.navigate({ to });
-  const { setUser } = useUser();
 
   const handleLogin = useCallback(async (values: FormValues) => {
     setError("");
@@ -108,16 +114,16 @@ const LoginPage = () => {
             label={"Passsword"}
             form={form}
           />
-          <Button
+          {/*           <Button
             className="forgotPassword"
             variant="tertiary"
             label="Password dimenticata?"
-          />
+          /> */}
           {error && <p className="error">{error}</p>}
 
           <div className="login-separator">Oppure accedi con</div>
           <div className="login-social-buttons">
-            <button className="social-login-button" onClick={() => login()} >
+            <button className="social-login-button" type="button" onClick={() => login()} >
               <img src={google} />
             </button>
 

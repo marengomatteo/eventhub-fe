@@ -7,7 +7,7 @@ import { MantineProvider } from "@mantine/core";
 
 // Componente wrapper per fornire il contesto al router
 function AppWithRouter() {
-  const { user, setUser } = useUser();
+  const { user, setUser, isLoading } = useUser();
 
   return (
     <RouterProvider
@@ -15,6 +15,7 @@ function AppWithRouter() {
       context={{
         user,
         setUser,
+        isLoading,
       }}
     />
   );

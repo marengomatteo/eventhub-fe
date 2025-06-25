@@ -15,14 +15,15 @@ const ProfilePage = () => {
     const [orders, setOrders] = useState([]);
 
 
-    const { user } = useUser();
+    const { user, isLoading } = useUser();
     const router = useRouter();
 
     useEffect(() => {
+        if (isLoading) return;
         if (!user) {
             router.navigate({ to: "/login" });
         }
-    }, [user, router]);
+    }, [user, router, isLoading]);
 
 
     useEffect(() => {
@@ -40,16 +41,18 @@ const ProfilePage = () => {
             }
         };
         fetchOrders();
-    }, [user]);
+    }, [user, isLoading]);
 
     return <ProfilePageLayout>
-        <div className="user">
-            <div className="user-info">MM</div>
+        {user && <div className="user">
+            <div className="user-info">
+                {user!.name?.[0] + user!.surname?.[0]}
+            </div>
             <div>
-                <div className="user-name">Marco Marconi</div>
+                <div className="user-name">{user!.name} {user!.surname}</div>
                 <div className="user-orders">{orders?.length} {orders?.length == 1 ? "ordine" : "ordini"}</div>
             </div>
-        </div>
+        </div>}
         <h2>Il tuo prossimo evento </h2>
         {orders.length > 0 ? <Ticket order={orders[0]} /> : <div>Non hai ancora acquistato biglietti</div>}
         {!showPreviousOrders && orders.length > 1 && <Button className="seeMore" variant="secondary" label="Vedi ordini precedenti" onClick={() => setShowPreviousOrders(true)} />}

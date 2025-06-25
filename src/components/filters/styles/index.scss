@@ -1,16 +1,24 @@
 .filters-wrapper {
   display: flex;
-  justify-content: center;
   align-items: center;
+  width: fit-content;
+  max-width: 100%;
   gap: 40px;
   overflow-x: auto;
   margin: auto;
   margin-top: 40px;
+  padding: 20px;
+
+  @media (max-width: 767px) {
+    gap: 20px;
+  }
   & .filter {
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 20px;
+    @media (max-width: 768px) {
+      padding-top: 10px;
+    }
     &.selected{
       & .filter-icon{
         background-color: var(--accent-orange);
@@ -33,6 +41,10 @@
       border-radius: 50%;
       border: 1px solid #d0d0d0;
       transition: all 0.2s ease-in-out;
+      @media (max-width: 768px) {
+        width: 80px;
+        height: 80px;
+      }
       &:hover {
         background-color: #f8f8f8;
       }
@@ -40,10 +52,17 @@
       & img {
         width: 65px;
         height: 65px;
+        @media (max-width: 768px) {
+          width: 50px;
+          height: 50px;
+        }
       }
     }
     & span {
       margin-top: 10px;
+      @media (max-width: 768px) {
+        margin-top: 5px;
+      }
     }
   }
 }

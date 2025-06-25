@@ -30,6 +30,11 @@ export const getBaseURL = (type: string) => {
                 baseURL: "http://localhost:8082/ticket-service/ticket",
                 withCredentials: true
             });
+        case "agenda":
+            return axios.create({
+                baseURL: "http://localhost:8082/agenda-service/agenda",
+                withCredentials: true
+            });
         default:
             return axios.create({
                 baseURL: "http://localhost:8082",

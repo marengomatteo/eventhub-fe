@@ -13,6 +13,7 @@ export interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   logout: () => void;
+  isLoading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -24,12 +25,15 @@ interface UserProviderProps {
 export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       const userData = await getBaseURL("authentication").get("/me");
       setUserState(userData.data);
+      setIsLoading(false);
     };
     fetchUser();
   }, []);
 
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUserState] = useState<User | null>(
     null
   );
@@ -45,7 +49,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser, logout, isLoading }}>
       {children}
     </UserContext.Provider>
   );

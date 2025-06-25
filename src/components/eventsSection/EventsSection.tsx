@@ -21,8 +21,8 @@ const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
     <div className="highlightEvents-wrapper">
       <h2>{title}</h2>
       <div className="events-container">
-        {highlightEvents.map((event) => (
-          <button className="event" key={event.eventName} onClick={() => router.navigate({ to: `/event/${event.id}` })}>
+        {highlightEvents.map((event, i) => (
+          <button className="event" key={event.eventName + i} onClick={() => router.navigate({ to: `/event/${event.id}` })}>
             <div className="event-image">
               <img src={event.image || "https://picsum.photos/300/200"} alt={event.eventName} />
               <div className="title">

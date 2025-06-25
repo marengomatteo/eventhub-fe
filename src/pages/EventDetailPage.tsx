@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "@tanstack/react-router";
 import StaticMap from "@components/common/Mappa/Mappa";
 import { getBaseURL } from "../utils";
-import { Event } from "../utils/types";
+import { Event, Session, AgendaResponse } from "../utils/types";
 import "./styles/eventDetailPage.scss";
 import pinIcon from "@assets/icons/pin.png";
 import Header from "@components/header/Header";
 import { router } from "@routes/router";
 import { useUser } from "@context/UserContext";
+import Footer from "@components/footer/Footer";
 
 const EventDetailPage = () => {
     const { eventId } = useParams({ from: '/event/$eventId' });
@@ -15,7 +16,24 @@ const EventDetailPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [confirmPage, setConfirmPage] = useState(false);
+    const [sessions, setSessions] = useState<Session[]>([]
+    );
+    const [isLoadingSessions, setIsLoadingSessions] = useState(false);
     const { user } = useUser();
+
+    const fetchEventAgenda = useCallback(async (eventId: string) => {
+        try {
+            setIsLoadingSessions(true);
+            const response = await getBaseURL("agenda").get<AgendaResponse>(`/${eventId}`);
+            if (response.status === 200) {
+                setSessions(response.data.sessionsList || []);
+            }
+        } catch (error) {
+            console.error("Error fetching event agenda:", error);
+        } finally {
+            setIsLoadingSessions(false);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -25,7 +43,8 @@ const EventDetailPage = () => {
                     const events = response.data;
                     const event = events.find((e: Event) => e.id === eventId);
                     setEvent(event);
-                    console.log(event);
+                    // Fetch agenda when event is loaded
+                    await fetchEventAgenda(eventId);
                 }
             } catch (err) {
                 console.error("Error fetching event:", err);
@@ -113,6 +132,48 @@ const EventDetailPage = () => {
                                     Acquista Biglietto
                                 </button>
                             </div>
+
+                            {/* Agenda Section */}
+                            <div className="event-agenda">
+                                <h2>Agenda</h2>
+                                {isLoadingSessions ? (
+                                    <p>Caricamento agenda in corso...</p>
+                                ) : sessions.length > 0 ? (
+                                    <div className="sessions-list">
+                                        {sessions.map((session) => (
+                                            <div key={session.id} className="session-item">
+                                                <h3>{session.title}</h3>
+                                                {session.speaker && (
+                                                    <p className="session-speaker">
+                                                        Relatore: {session.speaker.name} {session.speaker.surname}
+                                                    </p>
+                                                )}
+                                                <p className="session-time">
+                                                    {new Date(session.startTime).toLocaleTimeString('it-IT', {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })} - {new Date(session.endTime).toLocaleTimeString('it-IT', {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })}
+                                                </p>
+                                                {session.location && (
+                                                    <p className="session-location">
+                                                        Luogo: {session.location}
+                                                    </p>
+                                                )}
+                                                {session.description && (
+                                                    <p className="session-description">
+                                                        {session.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p>Nessuna sessione in programma.</p>
+                                )}
+                            </div>
                         </div>
 
                         <div className="event-location">
@@ -128,6 +189,7 @@ const EventDetailPage = () => {
                     </div>
                 </div>
             }
+            <Footer />
         </>
     );
 };

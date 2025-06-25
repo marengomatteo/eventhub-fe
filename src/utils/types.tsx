@@ -7,6 +7,31 @@ export interface Order {
     location: string;
 }
 
+export interface Speaker {
+    id?: string;
+    name: string;
+    surname: string;
+    email?: string;
+    bio?: string;
+    company?: string;
+}
+
+export interface Session {
+    id: string;
+    title: string;
+    description?: string;
+    location?: string;
+    startTime: string;
+    endTime: string;
+    speaker?: Speaker;
+}
+
+export interface AgendaResponse {
+    id: string;
+    eventId: string;
+    sessionsList: Session[];
+}
+
 export interface Event {
     id: string;
     eventName: string;
@@ -17,4 +42,5 @@ export interface Event {
     startTime: string;
     description?: string;
     eventType?: string;
+    agendaId?: string;
 }

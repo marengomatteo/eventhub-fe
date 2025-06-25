@@ -8,17 +8,17 @@ import Footer from "@components/footer/Footer";
 import { useEffect, useState } from "react";
 import { getBaseURL } from "../utils";
 import { Event } from "../utils/types";
+import { router } from "@routes/router";
+
 const HomePage = () => {
   const filters = data.filters;
 
   const [products, setProducts] = useState<Event[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<string>("");
-
   /* fetch products */
   const getProducts = () => {
     getBaseURL("event").get("/list").then((response) => {
-      /* multiply response data to simulate more events */
-      setProducts([...response.data, ...response.data, ...response.data, ...response.data, ...response.data]);
+      setProducts(response.data);
     });
   }
   useEffect(() => {
@@ -28,15 +28,18 @@ const HomePage = () => {
   const handleFilterClick = (filter: string) => {
     setSelectedFilter((prev) => (prev === filter ? "" : filter));
   }
+  const navigateToEventdetail = (eventId: string) => {
+    router.navigate({ to: `/event/${eventId}` });
+  }
   return (
     <>
       <Header showSearchBar={true} />
       {products?.[0] && (
-        <img className="highlight-product" src={products[0].image || "https://picsum.photos/300/200"} />
+        <button className="highlight-product" onClick={() => navigateToEventdetail(products[0].id)}><img src={products[0].image || "https://picsum.photos/300/200"} /></button>
       )}
       {products?.length > 1 && (
         <div className="carousel-container">
-          <Carousel
+          {products?.length > 4 && <Carousel
             slideSize={"auto"}
             height="200"
             slideGap="0"
@@ -47,7 +50,7 @@ const HomePage = () => {
             {products.map((product, index) => {
               if (index != 0) {
                 return (
-                  <Carousel.Slide key={index}>
+                  <Carousel.Slide key={index} onClick={() => navigateToEventdetail(product.id)} >
                     <div className="carousel-slide">
                       <img src={product.image || "https://picsum.photos/300/200"} alt={`Product ${index + 1}`} />
                     </div>
@@ -55,7 +58,7 @@ const HomePage = () => {
                 );
               }
             })}
-          </Carousel>
+          </Carousel>}
         </div>
       )}
       <Filters filters={filters} handleFilterClick={handleFilterClick} selectedFilter={selectedFilter} />

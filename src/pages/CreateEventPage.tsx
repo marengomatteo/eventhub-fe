@@ -3,16 +3,17 @@ import CustomDropZone from '@components/customDropZone/CustomDropZone';
 import Header from '@components/header/Header';
 import SideBar from '@components/sideBar/SideBar';
 import { useForm } from '@mantine/form';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import locationIcon from '@assets/icons/pin.png';
 import CustomSelect from '@components/common/input/CustomSelect';
 import CustomTextArea from '@components/common/input/CustomTextArea';
 import DateTimeInput from '@components/common/input/DateTimeInput';
-import { ActionIcon, Button, NumberInput } from '@mantine/core';
+import { ActionIcon, Button, LoadingOverlay, NumberInput } from '@mantine/core';
 import "./styles/createEvent.scss";
 import axios from 'axios';
 import { useRouter } from '@tanstack/react-router';
 import { getBaseURL } from '../utils';
+import { useUser } from '@context/UserContext';
 
 
 
@@ -184,10 +185,10 @@ const EventLocationBlock = ({ form }: { form: any }) => {
     );
 };
 
-const EventAgendaBlock = ({ form }: { form: any }) => {
+const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
     const sessions = form.values.agenda || [];
     const agendaErrors = Array.isArray(form.errors.agenda) ? form.errors.agenda : [];
-    const hasError = agendaErrors.length > 0 || (typeof form.errors.agenda === 'string' && form.errors.agenda.length > 0);
+    const hasError = error || agendaErrors.length > 0 || (typeof form.errors.agenda === 'string' && form.errors.agenda.length > 0);
 
     const addSession = () => {
         form.insertListItem('agenda', {
@@ -327,7 +328,7 @@ const CreateEventPage = () => {
         },
         validate: (values) => {
             const errors: Record<string, string> = {};
-            console.log("validation");
+            console.log("validation", values.startDate, values.endDate, (values.agenda[0] as any)?.startTime);
             console.log(files, form.getValues());
             if (files.length === 0) {
                 setFilesError(true);
@@ -354,9 +355,9 @@ const CreateEventPage = () => {
             if (values.isRange && !values.endDate) {
                 errors.endDate = 'Data fine è obbligatoria';
             }
-            if (!values.agenda || values.agenda.length === 0) {
+            if (step == 2 && (!values.agenda || values.agenda.length === 0)) {
                 errors.agenda = 'Aggiungi almeno una sessione all\'agenda';
-            } else {
+            } else if (step == 2) {
                 const agendaErrors: any[] = [];
                 values.agenda.forEach((session: any, index: number) => {
                     const sessionErrors: Record<string, string> = {};
@@ -397,6 +398,18 @@ const CreateEventPage = () => {
     const [filesError, setFilesError] = useState(false);
     const [step, setStep] = useState(1);
     const [error, setError] = useState<string>("");
+    const [pageLoading, setPageLoading] = useState(false);
+
+    const [publishEvent, setPublishEvent] = useState(false);
+
+    const { user, isLoading } = useUser();
+
+    useEffect(() => {
+        if (isLoading) return;
+        if (!user || user.role !== "ADMIN") {
+            router.navigate({ to: "/login" });
+        }
+    }, [user, isLoading]);
 
     const router = useRouter();
 
@@ -404,19 +417,56 @@ const CreateEventPage = () => {
 
     const handlePublishEvent = useCallback(async (values: any) => {
         try {
-            const response = await api.post("/events", values);
+            setPageLoading(true);
+            const data = {
+                "eventName": values.title,
+                "startTime": new Date(values.startDate).toISOString(),
+                "endTime": values.endDate ? new Date(values.endDate).toISOString() : new Date(values.startDate).toISOString(),
+                "location": values.location,
+                "description": values.description,
+                "maxPartecipants": values.maxParticipants,
+                "eventType": values.eventType,
+                "userId": user?.id
+            }
+
+            const response = await api.post("", data);
             if (response.status === 200) {
-                router.navigate({ to: "/" });
+                const agendaID = response.data;
+                await Promise.all(values.agenda.map(async (session: any) => {
+                    await getBaseURL("agenda").post(`/${agendaID}/sessions`, {
+                        "speaker": {
+                            "name": session.speaker,
+                            "surname": "",
+                            "email": "",
+                            "bio": "",
+                            "company": ""
+                        },
+                        "title": session.title,
+                        "location": session.location,
+                        "description": session.description,
+                        "startTime": new Date(session.startTime).toISOString(),
+                        "endTime": new Date(session.endTime).toISOString()
+                    });
+                })).then(() => {
+                    setPublishEvent(true);
+                    form.reset();
+                    setStep(1);
+                    setFiles([]);
+                    setFilesError(false);
+                    setPageLoading(false);
+                });
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 setError(error.response?.data?.message || "Errore durante la pubblicazione");
             }
+            setPageLoading(false);
         }
-    }, [api]);
+    }, [api, form]);
 
     return (
         <>
+            <LoadingOverlay visible={pageLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} loaderProps={{ color: '#eb5d24', type: 'dots' }} />
             <Header />
             <div className="create-event">
                 <SideBar showExpanded={true}>
@@ -425,7 +475,7 @@ const CreateEventPage = () => {
                         <div className='preview-ticket'>
                             <h4>{form.getValues().title || "Titolo evento"}</h4>
                             <p>{form.getValues().description || "Descrizione"}</p>
-                            <p className='secondary-info'>Data e ora: {form.getValues().startDate ? new Date(form.getValues().startDate!).toUTCString() : "Non inserita"} {form.getValues().endDate && " - " + form.getValues().endDate}</p>
+                            <p className='secondary-info'>Data e ora: {form.getValues().startDate ? new Date(form.getValues().startDate!).toLocaleString() : "Non inserita"} {form.getValues().endDate && " - " + form.getValues().endDate}</p>
                             <p className='secondary-info'><img src={locationIcon} />Location: {form.getValues().location || "Non inserita"}</p>
                         </div>
                     </div>
@@ -441,13 +491,20 @@ const CreateEventPage = () => {
                     </div>
                 </SideBar>
                 <div className="content">
+                    {
+                        publishEvent && (
+                            <Modal close={() => setPublishEvent(false)}>
+                                <h2>Evento pubblicato con successo</h2>
+                                <p>Il tuo evento è stato pubblicato con successo, vai alla <a href="/dashboard">dashboard</a> per monitorarlo.</p>
+                            </Modal>
+                        )
+                    }
                     <form onSubmit={form.onSubmit((values) => {
                         if (step == 1) {
                             console.log(form.errors)
                             setStep((prev) => prev + 1);
                         } else {
                             handlePublishEvent(values);
-                            console.log("API conferma", values);
                         }
                     })}>
                         {step == 1 ? <>
@@ -460,8 +517,9 @@ const CreateEventPage = () => {
                             </div>
                         </> :
                             <>
+                                {error && <p className="error">{error}</p>}
                                 <div className='blocks'>
-                                    <EventAgendaBlock form={form} />
+                                    <EventAgendaBlock error={error.length > 0} form={form} />
                                     <Button className="submit-button" type='submit' variant="primary" > Pubblica </Button>
                                 </div>
                             </>
@@ -473,4 +531,15 @@ const CreateEventPage = () => {
     );
 }
 
+const Modal = ({ children, close }: { children: React.ReactNode, close: () => void }) => {
+
+    return (
+        <>
+            <button onClick={close} className="modal-bg"></button>
+            <div className="modal">
+                {children}
+            </div>
+        </>
+    )
+}
 export default CreateEventPage;

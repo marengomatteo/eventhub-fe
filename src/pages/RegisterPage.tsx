@@ -1,9 +1,8 @@
 import { useForm } from "@mantine/form";
 import { useRouter } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getPasswordRequirements } from "../utils";
 import { getBaseURL } from "../utils";
-import { useUser } from "../context/UserContext";
 
 import Button from "../components/common/button/Button";
 import CustomInput from "@components/common/input/CustomInput";
@@ -16,7 +15,7 @@ import axios from "axios";
 import "./styles/registerPage.scss";
 
 interface FormValues {
-  userType: string;
+  userType: "user" | "admin" | "";
   email: string;
   name: string;
   surname: string;
@@ -124,6 +123,7 @@ const RegisterPage = () => {
         password: form.getValues().password,
         name: form.getValues().name,
         surname: form.getValues().surname,
+        role: form.getValues().userType.toUpperCase(),
       });
       if (response.status === 201) {
         router.navigate({ to: "/login" });
@@ -154,7 +154,7 @@ const RegisterPage = () => {
                 <div data-type="utente" className="bg"></div>
                 <span>Utente</span>
               </button>
-              <button type="button" className={`userOption ${form.getValues().userType === "organizer" ? "selected" : ""}`} onClick={() => form.setFieldValue("userType", "organizer")}>
+              <button type="button" className={`userOption ${form.getValues().userType === "admin" ? "selected" : ""}`} onClick={() => form.setFieldValue("userType", "admin")}>
                 <div data-type="organizzatore" className="bg"></div>
                 <span>Organizzatore</span>
               </button>

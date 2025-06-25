@@ -1,5 +1,6 @@
 import mic from "@icons/mic.svg";
-import disco from "@icons/disco.svg";
+import conference from "@icons/conference.svg";
+import people from "@icons/people.svg";
 
 const products = [
   {
@@ -32,11 +33,11 @@ const filters = [
   },
   {
     name: "conferenza",
-    icon: disco,
+    icon: conference,
   },
   {
     name: "altro",
-    icon: mic,
+    icon: people,
   }
 ];
 const highlightEvents = [
