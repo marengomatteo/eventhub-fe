@@ -1,6 +1,5 @@
 import "./App.css";
-import { useState } from "react";
-import { UserProvider, useUser } from "./context/UserContext";
+import { UserProvider, useUser } from "@context/UserContext";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "@routes/router";
 import { MantineProvider } from "@mantine/core";
@@ -22,18 +21,6 @@ function AppWithRouter() {
 }
 
 function App() {
-  const [coordinates, setCoordinates] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-
-  const handleLocationSelected = (coordinates: {
-    latitude: number;
-    longitude: number;
-  }) => {
-    setCoordinates(coordinates);
-  };
-
   return (
     <UserProvider>
       <MantineProvider>
