@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventhub-fe-service
+  namespace: eventhub
+  labels:
+    app: eventhub-fe
+spec:
+  selector:
+    app: eventhub-fe
+  ports:
+    - port: 80
+      targetPort: 5167
+      protocol: TCP
+  type: ClusterIP

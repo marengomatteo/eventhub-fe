@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventhub-fe
+  namespace: eventhub
+  labels:
+    app: eventhub-fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventhub-fe
+  template:
+    metadata:
+      labels:
+        app: eventhub-fe
+    spec:
+      containers:
+        - name: eventhub-fe
+          image: eventhub/frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5167
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5167
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5167
+            initialDelaySeconds: 5
+            periodSeconds: 5

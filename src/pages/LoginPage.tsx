@@ -15,12 +15,13 @@ interface FormValues {
   username: string;
   password: string;
 }
-const PSW_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@]).{8,}$/;
+const PSW_REGEX =
+  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@]).{8,}$/;
 
 const LoginPage = () => {
   const router = useRouter();
   const api = axios.create({
-    baseURL: "http://localhost:8082/user-service/authentication",
+    baseURL: "http://eventhub.127.0.0.1.nip.io/user-service/authentication",
     withCredentials: true,
   });
 
@@ -33,7 +34,8 @@ const LoginPage = () => {
     validate: {
       username: (value) => {
         if (!value) return "Username is required";
-        const emailRegex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
+        const emailRegex =
+          /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
         if (!emailRegex.test(value)) return "Username non valida";
         return null;
       },
@@ -42,7 +44,7 @@ const LoginPage = () => {
         if (!PSW_REGEX.test(value)) return "Password non valida";
         return null;
       },
-    }
+    },
   });
 
   const [error, setError] = useState<string>("");
@@ -63,42 +65,49 @@ const LoginPage = () => {
         navigate("/");
       }
     },
-    flow: 'auth-code',
+    flow: "auth-code",
   });
 
   const navigate = (to: string) => router.navigate({ to });
 
-  const handleLogin = useCallback(async (values: FormValues) => {
-    setError("");
-    try {
-      const response = await api.post("/signin", {
-        email: values.username,
-        password: values.password,
-      });
-      if (response.status === 200) {
-        const { data: { userDataResponse } } = response;
-        const userData = userDataResponse;
-        setUser(userData);
-        navigate("/");
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || "Errore durante il login");
-        form.setErrors({
-          username: error.response?.data?.message,
-          password: error.response?.data?.message,
+  const handleLogin = useCallback(
+    async (values: FormValues) => {
+      setError("");
+      try {
+        const response = await api.post("/signin", {
+          email: values.username,
+          password: values.password,
         });
+        if (response.status === 200) {
+          const {
+            data: { userDataResponse },
+          } = response;
+          const userData = userDataResponse;
+          setUser(userData);
+          navigate("/");
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data?.message || "Errore durante il login");
+          form.setErrors({
+            username: error.response?.data?.message,
+            password: error.response?.data?.message,
+          });
+        }
       }
-    }
-  }, [api]);
-
+    },
+    [api]
+  );
 
   return (
     <div className="login">
       <div className="left">
         <img src={logoExpanded} />
       </div>
-      <form className="right" onSubmit={form.onSubmit((values) => handleLogin(values))}>
+      <form
+        className="right"
+        onSubmit={form.onSubmit((values) => handleLogin(values))}
+      >
         <h1>Accedi per scoprire un mondo di eventi!</h1>
         <div className="login-form">
           <CustomInput
@@ -123,10 +132,13 @@ const LoginPage = () => {
 
           <div className="login-separator">Oppure accedi con</div>
           <div className="login-social-buttons">
-            <button className="social-login-button" type="button" onClick={() => login()} >
+            <button
+              className="social-login-button"
+              type="button"
+              onClick={() => login()}
+            >
               <img src={google} />
             </button>
-
           </div>
           <Button className="login-button" type="submit" label="Accedi" />
           <Button
