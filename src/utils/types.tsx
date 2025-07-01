@@ -34,12 +34,48 @@ export interface AgendaResponse {
 export interface Event {
     id: string;
     eventName: string;
-    image: string;
     location: string;
-    startDate: string;
-    endDate: string;
     startTime: string;
-    description?: string;
-    eventType?: string;
-    agendaId?: string;
+    endTime: string;
+    description: string;
+    maxPartecipants: number;
+    eventType: string;
+    userId: string;
+    eventImage?: string;
+}
+
+export interface EventListResponse {
+    id: string,
+    eventName: string,
+    startTime: string,
+    endTime: string,
+    location: string,
+    description: string,
+    eventImage?: string,
+    maxPartecipants: number,
+    partecipantsList:
+    {
+        userId: string,
+        name: string,
+        surname: string,
+        email: string
+    }[]
+    ,
+    eventType: string,
+    userId: string
+}
+
+
+export interface StatsCardProps {
+    title: string;
+    value: number;
+    color: string;
+}
+
+export interface Feedback {
+    id: string;
+    userName: string;
+    comment: string;
+    rating: number;
+    date: string;
 }

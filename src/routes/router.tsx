@@ -1,5 +1,6 @@
 import { User } from "@context/UserContext";
 import CreateEventPage from "@pages/CreateEventPage";
+import DashboardPage from "@pages/DashboardPage";
 import EventDashboardPage from "@pages/EventDashboardPage";
 import EventDetailPage from "@pages/EventDetailPage";
 import HomePage from "@pages/HomePage";
@@ -82,8 +83,13 @@ const createEventRoute = createRoute({
   component: CreateEventPage,
 });
 
+const dashboardRoute = createRoute({
+  path: "/dashboard",
+  getParentRoute: () => rootRoute,
+  component: DashboardPage,
+});
 const eventDashboardRoute = createRoute({
-  path: "/dashboard/events/$eventId",
+  path: "/dashboard/$eventId",
   getParentRoute: () => rootRoute,
   component: EventDashboardPage,
 });
@@ -120,6 +126,7 @@ const routeTree = rootRoute.addChildren([
   eventDetailRoute,
   ticketDetailRoute,
   createEventRoute,
+  dashboardRoute,
   eventDashboardRoute,
   searchResultsRoute,
   notFoundRoute,
@@ -129,7 +136,7 @@ export const router = createRouter({
   routeTree,
   context: {
     user: null,
-    setUser: () => {},
+    setUser: () => { },
     isLoading: false,
   },
 });

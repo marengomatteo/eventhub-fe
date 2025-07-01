@@ -1,7 +1,6 @@
 .event-dashboard {
   padding: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
 
   .event-header {
     display: flex;
@@ -108,6 +107,29 @@
       color: #666;
       text-align: center;
       padding: 2rem 0;
+    }
+  }
+
+  .edit-button {
+    border: 2px solid var(--accent-orange);
+    color: var(--accent-orange);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    &:hover {
+      border-color: var(--accent-orange-hover);
+      color: var(--accent-orange-hover);
+    }
+    & i {
+      font-size: 24px;
+      &.icon-size-small {
+        font-size: 16px;
+      }
+
     }
   }
 

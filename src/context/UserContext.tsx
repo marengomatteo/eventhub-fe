@@ -26,9 +26,15 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       setIsLoading(true);
-      const userData = await getBaseURL("authentication").get("/me");
-      setUserState(userData.data);
-      setIsLoading(false);
+      try {
+        const userData = await getBaseURL("authentication").get("/me");
+        setUserState(userData.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setUserState(null);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchUser();
   }, []);
