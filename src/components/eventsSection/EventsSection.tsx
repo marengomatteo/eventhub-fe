@@ -1,16 +1,11 @@
 import { FC } from "react";
 import { useRouter } from "@tanstack/react-router";
 import "./styles/index.scss";
+import { Event } from "../../utils/types";
 
 interface EventsSectionProps {
   title: string;
-  highlightEvents: {
-    eventName: string;
-    image: string;
-    startDate: string;
-    location: string;
-    id: string;
-  }[];
+  highlightEvents: Event[];
 }
 
 const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
@@ -24,14 +19,14 @@ const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
         {highlightEvents.map((event, i) => (
           <button className="event" key={event.eventName + i} onClick={() => router.navigate({ to: `/event/${event.id}` })}>
             <div className="event-image">
-              <img src={event.image || "https://picsum.photos/300/200"} alt={event.eventName} />
+              <img src={event.eventImage || "https://picsum.photos/300/200"} alt={event.eventName} />
               <div className="title">
                 <span>{event.eventName}</span>
               </div>
             </div>
             <div className="event-details">
               <div className="event-location">{event.location}</div>
-              <div className="event-date">{event.startDate}</div>
+              <div className="event-date">{event.startTime}</div>
             </div>
           </button>
         ))}

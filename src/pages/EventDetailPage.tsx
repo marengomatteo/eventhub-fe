@@ -101,7 +101,7 @@ const EventDetailPage = () => {
           <div className="event-hero">
             <div className="event-image-container">
               <img
-                src={event.image || "https://picsum.photos/1200/600"}
+                src={event.eventImage || "https://picsum.photos/1200/600"}
                 alt={event.eventName}
                 className="event-main-image"
               />
@@ -110,7 +110,7 @@ const EventDetailPage = () => {
                 <div className="event-meta">
                   <div className="meta-item">
                     <span>
-                      {new Date(event.startDate).toLocaleDateString()}
+                      {new Date(event.startTime).toLocaleDateString()}
                     </span>
                   </div>
                   {event.startTime && (

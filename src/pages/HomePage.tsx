@@ -35,7 +35,7 @@ const HomePage = () => {
     <>
       <Header showSearchBar={true} />
       {products?.[0] && (
-        <button className="highlight-product" onClick={() => navigateToEventdetail(products[0].id)}><img src={products[0].image || "https://picsum.photos/300/200"} /></button>
+        <button className="highlight-product" onClick={() => navigateToEventdetail(products[0].id)}><img src={products[0].eventImage || "https://picsum.photos/300/200"} /></button>
       )}
       {products?.length > 1 && (
         <div className="carousel-container">
@@ -52,7 +52,7 @@ const HomePage = () => {
                 return (
                   <Carousel.Slide key={index} onClick={() => navigateToEventdetail(product.id)} >
                     <div className="carousel-slide">
-                      <img src={product.image || "https://picsum.photos/300/200"} alt={`Product ${index + 1}`} />
+                      <img src={product.eventImage || "https://picsum.photos/300/200"} alt={`Product ${index + 1}`} />
                     </div>
                   </Carousel.Slide>
                 );
