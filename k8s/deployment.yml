@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: eventhub-fe
-          image: eventhub/frontend:latest
+          image: eventhub/frontend:v1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5167
@@ -28,15 +28,3 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "100m"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 5167
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 5167
-            initialDelaySeconds: 5
-            periodSeconds: 5

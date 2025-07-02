@@ -38,7 +38,7 @@ const TicketDetailPage: React.FC<{ order: Order }> = () => {
   useEffect(() => {
     getOrder();
     getQrCode();
-  }, [getOrder, getQrCode, ticketId]);
+  }, [ticketId]);
 
   return (
     <ProfilePageLayout>
