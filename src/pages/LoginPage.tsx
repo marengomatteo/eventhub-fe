@@ -6,7 +6,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "@tanstack/react-router";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { API_URL } from "utils";
+import { API_URL } from "../utils"
 import Button from "../components/common/button/Button";
 import { useUser } from "../context/UserContext";
 import "./styles/login.scss";
