@@ -1,14 +1,14 @@
+import EventsSection from "@components/eventsSection/EventsSection";
+import Filters from "@components/filters/Filters";
+import Footer from "@components/footer/Footer";
 import Header from "@components/header/Header";
 import { Carousel } from "@mantine/carousel";
-import "./styles/homepage.scss";
-import Filters from "@components/filters/Filters";
 import data from "@mocks/data";
-import EventsSection from "@components/eventsSection/EventsSection";
-import Footer from "@components/footer/Footer";
+import { router } from "@routes/router";
 import { useEffect, useState } from "react";
 import { getBaseURL } from "../utils";
 import { Event } from "../utils/types";
-import { router } from "@routes/router";
+import "./styles/homepage.scss";
 
 const HomePage = () => {
   const filters = data.filters;

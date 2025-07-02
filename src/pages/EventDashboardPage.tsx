@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams, useRouter } from "@tanstack/react-router";
-import { getBaseURL } from "../utils";
 import ProfilePageLayout from "@components/common/profilePageLayout/ProfilePageLayout";
-import Button from "@components/common/button/Button";
-import "./styles/eventDashboard.scss";
 import { useUser } from "@context/UserContext";
-import { Event, StatsCardProps, Feedback, EventListResponse } from "../utils/types";
-import { router } from "@routes/router";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { EventListResponse, Feedback, StatsCardProps } from "../utils/types";
+import "./styles/eventDashboard.scss";
 
 const StatsCard = ({ title, value, color }: StatsCardProps) => (
   <div className="stats-card" style={{ borderTop: `4px solid ${color}` }}>
@@ -39,7 +36,6 @@ const FeedbackItem = ({
 const EventDashboardPage = () => {
   const { eventId } = useParams({ strict: false });
   const { user, isLoading: isLoadingUser } = useUser();
-  const router = useRouter();
   const navigate = useNavigate();
   const [event, setEvent] = useState<EventListResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);

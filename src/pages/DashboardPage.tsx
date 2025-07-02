@@ -1,10 +1,9 @@
+import ProfilePageLayout from '@components/common/profilePageLayout/ProfilePageLayout';
+import { useUser } from '@context/UserContext';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { EventListResponse } from '@utils/types';
 import { FC, useEffect, useState } from 'react';
-import ProfilePageLayout from '@components/common/profilePageLayout/ProfilePageLayout';
-import { useUser } from '@context/UserContext';
 import { getBaseURL } from '../utils';
-import { useRouter } from '@tanstack/react-router';
 
 import './styles/DashboardPage.scss';
 
@@ -12,18 +11,12 @@ const DashboardPage: FC = () => {
     const navigate = useNavigate();
     const { user, isLoading: isLoadingUser } = useUser();
     const [events, setEvents] = useState<EventListResponse[]>([]);
-    const router = useRouter();
 
     const handleEventClick = (eventId: string) => {
         navigate({ to: `/dashboard/${eventId}` });
     };
 
     useEffect(() => {
-        /* if (isLoadingUser) return;
-        if (!user || user.role !== "ADMIN") {
-            router.navigate({ to: "/login" });
-            return;
-        } */
         const fetchEvents = async () => {
             try {
                 const response = await getBaseURL("event").get(`/${user?.id}/list`);
