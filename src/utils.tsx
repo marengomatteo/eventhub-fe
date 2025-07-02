@@ -8,36 +8,38 @@ export const getPasswordRequirements = (password: string) => ({
   hasMinLength: password.length >= 8,
 });
 
+export const API_URL = "http://localhost:8082";
+
 export const getBaseURL = (type: string) => {
   switch (type) {
     case "event":
       return axios.create({
-        baseURL: "http://eventhub.127.0.0.1.nip.io/event-service/events",
+        baseURL: `${API_URL}/event-service/events`,
         withCredentials: true,
       });
     case "user":
       return axios.create({
-        baseURL: "http://eventhub.127.0.0.1.nip.io/user-service/users",
+        baseURL: `${API_URL}/user-service/users`,
         withCredentials: true,
       });
     case "authentication":
       return axios.create({
-        baseURL: "http://eventhub.127.0.0.1.nip.io/user-service/authentication",
+        baseURL: `${API_URL}/user-service/authentication`,
         withCredentials: true,
       });
     case "ticket":
       return axios.create({
-        baseURL: "http://eventhub.127.0.0.1.nip.io/ticket-service/ticket",
+        baseURL: `${API_URL}/ticket-service/ticket`,
         withCredentials: true,
       });
     case "agenda":
       return axios.create({
-        baseURL: "http://eventhub.127.0.0.1.nip.io/agenda-service/agenda",
+        baseURL: `${API_URL}/agenda-service/agenda`,
         withCredentials: true,
       });
     default:
       return axios.create({
-        baseURL: "http://eventhub.127.0.0.1.nip.io",
+        baseURL: "${apiUrl}",
         withCredentials: true,
       });
   }

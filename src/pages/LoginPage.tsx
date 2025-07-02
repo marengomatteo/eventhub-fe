@@ -2,13 +2,13 @@ import google from "@assets/google-login.png";
 import logoExpanded from "@assets/logo-expanded.png";
 import CustomInput from "@components/common/input/CustomInput";
 import { useForm } from "@mantine/form";
-import Button from "../components/common/button/Button";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "@tanstack/react-router";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { API_URL } from "utils";
+import Button from "../components/common/button/Button";
 import { useUser } from "../context/UserContext";
-
 import "./styles/login.scss";
 
 interface FormValues {
@@ -21,7 +21,7 @@ const PSW_REGEX =
 const LoginPage = () => {
   const router = useRouter();
   const api = axios.create({
-    baseURL: "http://eventhub.127.0.0.1.nip.io/user-service/authentication",
+    baseURL: `${API_URL}/user-service/authentication`,
     withCredentials: true,
   });
 
