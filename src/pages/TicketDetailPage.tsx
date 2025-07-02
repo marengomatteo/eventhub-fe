@@ -26,18 +26,12 @@ const TicketDetailPage: React.FC<{ order: Order }> = () => {
           (order: Order) => order.id === ticketId
         );
         setOrder(order);
+        setQrcode(order.id);
       });
   }, [ticketId, user?.id]);
 
-  const getQrCode = useCallback(() => {
-    if (!order) return;
-    const qrcode = order.id;
-    setQrcode(qrcode);
-  }, [order]);
-
   useEffect(() => {
     getOrder();
-    getQrCode();
   }, [ticketId]);
 
   return (
