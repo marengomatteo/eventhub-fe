@@ -1,35 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useNavigate, useParams, useRouter } from "@tanstack/react-router";
 import { getBaseURL } from "../utils";
 import ProfilePageLayout from "@components/common/profilePageLayout/ProfilePageLayout";
 import Button from "@components/common/button/Button";
 import "./styles/eventDashboard.scss";
 import { useUser } from "@context/UserContext";
-
-interface EventData {
-  id: string;
-  eventName: string;
-  startDate: string;
-  endDate?: string;
-  location: string;
-  description: string;
-  maxPartecipants: number;
-  eventType: string;
-}
-
-interface StatsCardProps {
-  title: string;
-  value: number;
-  color: string;
-}
-
-interface Feedback {
-  id: string;
-  userName: string;
-  comment: string;
-  rating: number;
-  date: string;
-}
+import { Event, StatsCardProps, Feedback, EventListResponse } from "../utils/types";
+import { router } from "@routes/router";
 
 const StatsCard = ({ title, value, color }: StatsCardProps) => (
   <div className="stats-card" style={{ borderTop: `4px solid ${color}` }}>
@@ -62,9 +39,9 @@ const FeedbackItem = ({
 const EventDashboardPage = () => {
   const { eventId } = useParams({ strict: false });
   const { user, isLoading: isLoadingUser } = useUser();
-
+  const router = useRouter();
   const navigate = useNavigate();
-  const [event, setEvent] = useState<EventData | null>(null);
+  const [event, setEvent] = useState<EventListResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState({
     registrations: 0,
@@ -74,29 +51,47 @@ const EventDashboardPage = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
 
   useEffect(() => {
+    if (!eventId) return;
+    if (isLoadingUser) return;
     const fetchEventData = async () => {
       try {
-        // Fetch event details
-        const eventResponse = await getBaseURL("event").get(`/${eventId}`);
-        if (eventResponse.status === 200) {
-          setEvent(eventResponse.data);
-        }
+        /*         const eventResponse = await getBaseURL("event").get(`/${user?.id}/list`);
+                if (eventResponse.status === 200) {
+                  setEvent(eventResponse.data.find((e: EventListResponse) => e.id === eventId));
+                } */
+        setEvent({
+          id: eventId!,
+          eventName: "",
+          location: "",
+          startTime: "",
+          endTime: "",
+          description: "",
+          maxPartecipants: 0,
+          eventType: "",
+          userId: user?.id || "4483494fiefo",
+          eventImage: "",
+          partecipantsList: [],
+        });
+        /*         const statsResponse = await getBaseURL("event").get(
+                  `/${eventId}/stats`
+                );
+                if (statsResponse.status === 200) {
+                  setStats(statsResponse.data);
+                } */
 
-        // Fetch event statistics
-        const statsResponse = await getBaseURL("event").get(
-          `/${eventId}/stats`
-        );
-        if (statsResponse.status === 200) {
-          setStats(statsResponse.data);
-        }
+        setStats({
+          registrations: 0,
+          checkIns: 0,
+          absents: 0,
+        });
 
-        // Fetch feedback
-        const feedbackResponse = await getBaseURL("feedback").get(
-          `/event/${eventId}`
-        );
-        if (feedbackResponse.status === 200) {
-          setFeedbacks(feedbackResponse.data);
-        }
+        /*        const feedbackResponse = await getBaseURL("feedback").get(
+                 `/event/${eventId}`
+               );
+               if (feedbackResponse.status === 200) {
+                 setFeedbacks(feedbackResponse.data);
+               } */
+        setFeedbacks([]);
       } catch (error) {
         console.error("Error fetching event data:", error);
       } finally {
@@ -104,24 +99,21 @@ const EventDashboardPage = () => {
       }
     };
 
+
     if (eventId) {
       fetchEventData();
+      console.log("Event data fetched", event);
     }
-  }, [eventId]);
+  }, [eventId, user, isLoadingUser]);
 
   useEffect(() => {
-    if (isLoadingUser) return;
-    if (!user) {
-      navigate({ to: "/login" });
-    }
+    /*  if (isLoadingUser) return;
+     if (!user || user.role !== "ADMIN") {
+       router.navigate({ to: "/login" });
+     } */
   }, [user, isLoadingUser]);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
-  if (!event) {
-    return <div>Evento non trovato</div>;
-  }
+
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -137,84 +129,80 @@ const EventDashboardPage = () => {
   return (
     <ProfilePageLayout>
       <div className="event-dashboard">
-        <div className="event-header">
+        {event ? <><div className="event-header">
           <h1>{event.eventName}</h1>
-          <Button
-            variant="secondary"
-            label="Modifica"
-            icon="pencil"
+          <button
+            className="edit-button"
             onClick={() => navigate({ to: `/events/${eventId}/edit` })}
-          />
+          >Modifica <i className="icon-edit icon-size-small"></i></button>
         </div>
-
-        <div className="event-details">
-          <h2>Dati evento</h2>
-          <div className="details-grid">
-            <div className="detail-item">
-              <span className="detail-label">Data:</span>
-              <span className="detail-value">
-                {formatDate(event.startDate)}
-                {event.endDate && ` - ${formatDate(event.endDate)}`}
-              </span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Luogo:</span>
-              <span className="detail-value">{event.location}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Tipo:</span>
-              <span className="detail-value">{event.eventType}</span>
-            </div>
-            <div className="detail-item full-width">
-              <span className="detail-label">Descrizione:</span>
-              <p className="detail-value">{event.description}</p>
+          <div className="event-details">
+            <h2>Dati evento</h2>
+            <div className="details-grid">
+              <div className="detail-item">
+                <span className="detail-label">Data:</span>
+                <span className="detail-value">
+                  {formatDate(event.startTime)}
+                  {event.endTime && ` - ${formatDate(event.endTime)}`}
+                </span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Luogo:</span>
+                <span className="detail-value">{event.location}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Tipo:</span>
+                <span className="detail-value">{event.eventType}</span>
+              </div>
+              <div className="detail-item full-width">
+                <span className="detail-label">Descrizione:</span>
+                <p className="detail-value">{event.description}</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="stats-container">
-          <StatsCard
-            title="ISCRIZIONI"
-            value={stats.registrations}
-            color="#FFD700" // Gold
-          />
-          <StatsCard
-            title="CHECK IN"
-            value={stats.checkIns}
-            color="#4CAF50" // Green
-          />
-          <StatsCard
-            title="ASSENTI"
-            value={stats.absents}
-            color="#FF6B6B" // Red
-          />
-        </div>
-
-        <div className="feedback-section">
-          <div className="section-header">
-            <h2>Feedback ({feedbacks.length})</h2>
-            <Button
-              variant="primary"
-              label="Nuovo"
-              icon="plus"
-              onClick={() => {}}
+          <div className="stats-container">
+            <StatsCard
+              title="ISCRIZIONI"
+              value={stats.registrations}
+              color="#FFD700" // Gold
+            />
+            <StatsCard
+              title="CHECK IN"
+              value={stats.checkIns}
+              color="#4CAF50" // Green
+            />
+            <StatsCard
+              title="ASSENTI"
+              value={stats.absents}
+              color="#FF6B6B" // Red
             />
           </div>
 
-          {feedbacks.length > 0 ? (
-            <div className="feedback-list">
-              {feedbacks.map((feedback) => (
-                <FeedbackItem
-                  key={feedback.id}
-                  userName={feedback.userName}
-                  comment={feedback.comment}
-                />
-              ))}
+          <div className="feedback-section">
+            <div className="section-header">
+              <h2>Feedback ({feedbacks.length})</h2>
+              <button
+                className="edit-button"
+                onClick={() => { }}
+              >Nuovo <i className="icon-add"></i></button>
             </div>
-          ) : (
-            <p className="no-feedback">Nessun feedback disponibile</p>
-          )}
-        </div>
+
+            {feedbacks.length > 0 ? (
+              <div className="feedback-list">
+                {feedbacks.map((feedback) => (
+                  <FeedbackItem
+                    key={feedback.id}
+                    userName={feedback.userName}
+                    comment={feedback.comment}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="no-feedback">Nessun feedback disponibile</p>
+            )}
+          </div>
+        </> : isLoading ? <div>Caricamento...</div> : <div>Evento non trovato</div>}
       </div>
     </ProfilePageLayout>
   );
