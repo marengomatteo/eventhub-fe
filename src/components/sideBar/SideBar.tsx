@@ -9,7 +9,13 @@ import chevron from "@assets/icons/chevron.svg";
 
 import "./styles/index.scss";
 
-const SideBar: FC<{ showExpanded?: boolean, children?: ReactNode }> = ({ showExpanded = false, children }) => {
+interface SideBarProps {
+  showExpanded?: boolean;
+  children?: ReactNode;
+  onNavigate?: () => void;
+}
+
+const SideBar: FC<SideBarProps> = ({ showExpanded = false, children, onNavigate }) => {
     const router = useRouter();
     const pathname = useRouterState({ select: (s) => s.location.pathname });
     const { user } = useUser();
@@ -37,9 +43,16 @@ const SideBar: FC<{ showExpanded?: boolean, children?: ReactNode }> = ({ showExp
         <div className="sidebar">
             {items.filter(item => item !== null).map((item, index) => {
                 const isSelected = item.refs?.some(ref => ref == "/" ? pathname == "/" : pathname.startsWith(ref));
-                return <Link to={item.refs[0]} className={`item ${isSelected ? "selected" : ""}`} key={index}>
-                    <i className={item.icon} />
-                </Link>
+                return (
+                    <Link 
+                        to={item.refs[0]} 
+                        className={`item ${isSelected ? "selected" : ""}`} 
+                        key={index}
+                        onClick={onNavigate}
+                    >
+                        <i className={item.icon} />
+                    </Link>
+                )
             })}
         </div>
         {showExpanded && <div className="sidebar-expanded">

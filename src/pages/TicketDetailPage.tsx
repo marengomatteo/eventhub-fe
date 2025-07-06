@@ -19,6 +19,7 @@ const TicketDetailPage: React.FC<{ order: Order }> = () => {
   const [order, setOrder] = useState<Order | null>(null);
 
   const getOrder = useCallback(() => {
+    console.log("ID ", user?.id)
     getBaseURL("ticket")
       .get(`/${user?.id}`)
       .then((response) => {
@@ -31,8 +32,10 @@ const TicketDetailPage: React.FC<{ order: Order }> = () => {
   }, [ticketId, user?.id]);
 
   useEffect(() => {
-    getOrder();
-  }, [ticketId]);
+    if (user?.id && ticketId) {
+      getOrder();
+    }
+  }, [ticketId, user?.id]);
 
   return (
     <ProfilePageLayout>
@@ -55,15 +58,17 @@ const TicketDetailPage: React.FC<{ order: Order }> = () => {
               </div>
               <hr />
 
-              {qrcode && (
-                <QRCode
-                  value={qrcode}
-                  size={200}
-                  bgColor="#ffffff"
-                  fgColor="#000000"
-                  level="H"
-                />
-              )}
+              <div className="qr-code">
+                {qrcode && (
+                  <QRCode
+                    value={qrcode}
+                    size={200}
+                    bgColor="#ffffff"
+                    fgColor="#000000"
+                    level="H"
+                  />
+                )}
+              </div>
               <div className="order-info">
                 Ordine <span>{order?.id}</span> del {"2025-01-01"}
               </div>

@@ -1,4 +1,4 @@
-header {
+.header {
   position: relative;
   top: 0;
   width: 100%;
@@ -12,12 +12,39 @@ header {
   padding: 12px 20px;
   z-index: 1000;
   
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header-left {
+      .menu-toggle {
+        display: block;
+      }
+    }
+  }
+  
   @media (min-width: 768px) {
-    height: 102px;
+    height: 80px;
     padding: 0 25px;
     flex-wrap: nowrap;
   }
-  & .header-logo {
+  .header-logo {
     height: 50px;
     width: auto;
     flex-shrink: 0;
@@ -27,7 +54,7 @@ header {
       height: 60px;
     }
   }
-  & .search-container {
+  .search-container {
     position: relative;
     display: flex;
     align-items: center;
@@ -89,7 +116,7 @@ header {
       margin: 0 16px;
     }
   }
-  & .breadcrumb {
+  .breadcrumb {
     display: none;
     align-items: center;
     gap: 8px;

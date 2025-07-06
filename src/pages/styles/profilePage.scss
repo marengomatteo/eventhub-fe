@@ -1,8 +1,9 @@
-.profile {
+.profile-layout {
     display: flex;
     gap: 24px;
     min-height: 100dvh;
-  height: 100%;
+    height: 100%;
+    position: relative;
     & .page-content{
         display: flex;
         flex-direction: column;
@@ -38,4 +39,56 @@
     & .seeMore{
         margin: auto;
     }
+
+.sidebar-container {
+  transition: transform 0.3s ease;
+  z-index: 1001;
+}
+
+.page-content {
+  flex: 1;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar-container.open {
+    transform: translateX(0);
+  }
+  
+  .page-content {
+    padding: 30px;
+  }
+  
+  .overlay {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-content {
+    padding: 20px;
+  }
+}
+
 }

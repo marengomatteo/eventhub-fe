@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { HeaderProps } from "./types";
 import { useUser } from "../../context/UserContext";
 
 import logoExpanded from "@assets/logo-expanded.png";
+import logo from "@assets/logo.png"
 import profile from "@icons/profile.svg";
 import chevron from "@icons/chevron.svg";
 
@@ -12,11 +12,20 @@ import SearchBar from "./SearchBar";
 import { Popover } from "@mantine/core";
 import { useState } from "react";
 import { useRouter } from "@tanstack/react-router";
+import { useMediaQuery } from "@mantine/hooks";
 
-const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb, showProfileIcon = true }) => {
+interface HeaderProps {
+  showSearchBar?: boolean;
+  breadcrumb?: string;
+  showProfileIcon?: boolean;
+  onMenuToggle?: () => void;
+}
+
+const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb, showProfileIcon = true, onMenuToggle }) => {
   const { user, logout } = useUser();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleLogout = () => {
     logout();
@@ -26,9 +35,16 @@ const Header: FC<HeaderProps> = ({ showSearchBar = false, breadcrumb, showProfil
   return (
     <>
       <header className="header">
-        <Link to="/">
-          <img className="header-logo" src={logoExpanded} alt="logo expanded" />
-        </Link>
+        <div className="header-left">
+          {onMenuToggle && (
+            <button className="menu-toggle" onClick={onMenuToggle}>
+              <i className="icon-menu" />
+            </button>
+          )}
+          <Link to="/">
+            <img className="header-logo" src={isMobile ? logo : logoExpanded} alt="logo expanded" />
+          </Link>
+        </div>
 
         {showSearchBar && <SearchBar />}
         {breadcrumb && (

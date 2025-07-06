@@ -1,5 +1,9 @@
 .sidebar-wrapper{
     display: flex;
+    width: fit-content;
+    height: 100dvh;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+
     & .sidebar{
     display: flex;
     flex-direction: column;
