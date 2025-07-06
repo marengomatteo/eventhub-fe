@@ -26,11 +26,6 @@ const SideBar: FC<{ showExpanded?: boolean, children?: ReactNode }> = ({ showExp
         refs: ["/profile", "/details/"]
     },
     isAdmin ? {
-        icon: "icon-dashboard",
-        id: "dashboard",
-        refs: ["/dashboard"]
-    } : null,
-    isAdmin ? {
         icon: "icon-create-event",
         id: "create-event",
         refs: ["/create-event"]
