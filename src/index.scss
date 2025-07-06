@@ -36,6 +36,13 @@ button {
 * {
   box-sizing: border-box;
 }
+
+.mantine-InputWrapper-label{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+}
 /* BACK BUTTON */
 .back-button{
   display: flex;

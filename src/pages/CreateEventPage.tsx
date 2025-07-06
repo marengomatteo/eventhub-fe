@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useRouter } from '@tanstack/react-router';
 import { getBaseURL } from '../utils';
 import { useUser } from '@context/UserContext';
+import { useMediaQuery } from '@mantine/hooks';
 
 
 
@@ -133,7 +134,7 @@ const EventDetailsBlock = ({ form }: { form: any }) => {
 };
 
 const EventLocationBlock = ({ form }: { form: any }) => {
-    const [isRange, setIsRange] = useState(false);
+    const [isRange, setIsRange] = useState(form?.getValues()?.endDate !== null);
     const hasError = Boolean(
         form.errors.location ||
         form.errors.startDate ||
@@ -178,7 +179,7 @@ const EventLocationBlock = ({ form }: { form: any }) => {
             )}
             <button
                 className="toggle-range"
-                onClick={() => setIsRange(!isRange)}
+                onClick={() => { setIsRange(!isRange); if (isRange) { form.setFieldValue("endDate", null); } }}
                 type="button"
             >
                 {isRange ? 'Rimuovi data fine' : 'Aggiungi data fine'}
@@ -272,6 +273,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                                 placeholder="Inserisci email speaker/performer"
                                 form={form}
                                 error={agendaErrors[index]?.email}
+                                required
                             />
                             <CustomInput
                                 name={`agenda.${index}.bio`}
@@ -280,6 +282,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                                 placeholder="Inserisci bio speaker/performer"
                                 form={form}
                                 error={agendaErrors[index]?.bio}
+                                required
                             />
                             <CustomInput
                                 name={`agenda.${index}.company`}
@@ -288,6 +291,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
                                 placeholder="Inserisci company speaker/performer"
                                 form={form}
                                 error={agendaErrors[index]?.company}
+                                required
                             />
                         </div>
                         <div className="form-group">
@@ -353,6 +357,7 @@ const EventAgendaBlock = ({ form, error }: { form: any, error: boolean }) => {
 };
 
 const CreateEventPage = () => {
+    const isMobile = useMediaQuery('(max-width: 768px)');
     const emailRegex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
     const form = useForm({
         initialValues: {
@@ -395,6 +400,9 @@ const CreateEventPage = () => {
             }
             if (values.isRange && !values.endDate) {
                 errors.endDate = 'Data fine è obbligatoria';
+            }
+            if (values.startDate && values.endDate && values.startDate > values.endDate) {
+                errors.startDate = 'Data inizio deve essere inferiore a data fine';
             }
             if (step == 2 && (!values.agenda || values.agenda.length === 0)) {
                 errors.agenda = 'Aggiungi almeno una sessione all\'agenda';
@@ -534,7 +542,7 @@ const CreateEventPage = () => {
             <LoadingOverlay visible={pageLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} loaderProps={{ color: '#eb5d24', type: 'dots' }} />
             <Header />
             <div className="create-event">
-                <SideBar showExpanded={true}>
+                {!isMobile && <SideBar showExpanded={true}>
                     <div className="ticket-preview">
                         <h3>Anteprima Biglietto</h3>
                         <div className='preview-ticket'>
@@ -558,7 +566,7 @@ const CreateEventPage = () => {
                             );
                         })}
                     </div>
-                </SideBar>
+                </SideBar>}
                 <div className="content">
                     {
                         publishEvent && (
@@ -586,6 +594,10 @@ const CreateEventPage = () => {
                             </div>
                         </> :
                             <>
+                                <span className="back" onClick={() => setStep((prev) => prev - 1)}>
+                                    <i className='icon-chevron-left'></i>
+                                    Torna allo step precedente
+                                </span>
                                 {error && <p className="error">{error}</p>}
                                 <div className='blocks'>
                                     <EventAgendaBlock error={error.length > 0} form={form} />

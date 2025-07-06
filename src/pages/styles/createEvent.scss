@@ -1,12 +1,23 @@
 .create-event {
     display: flex;
-    height: 100%;
+    flex-direction: column;
+    min-height: 100%;
+    
+    @media (min-width: 992px) {
+        flex-direction: row;
+    }
 }
 
 .timeline {
-    display: flex;
+    display: none; /* Hidden by default on mobile */
     flex-direction: column;
     padding: 16px 0;
+    border-right: 1px solid #e0e0e0;
+    min-width: 250px;
+    
+    @media (min-width: 768px) {
+        display: flex; /* Show on tablet and up */
+    }
 
     .timeline-item {
         position: relative;
@@ -80,20 +91,45 @@
 
 .content {
     width: 100%;
-    padding: 24px 40px;
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
+    
+    @media (min-width: 768px) {
+        padding: 24px 40px;
+    }
 }
-form{
+form {
     width: 100%;
-    max-width: 500px;
-    & .submit-button{
-        width:30%;
-        margin: auto;
+    max-width: 100%;
+    
+    @media (min-width: 576px) {
+        max-width: 500px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+        
+        @media (max-width: 767px) {
+            margin-bottom: 16px;
+        }
+    }
+    
+    .submit-button {
+        width: 100%;
+        margin: 20px auto;
         background-color: var(--accent-orange);
-        &:hover{
+        height: 48px;
+        font-size: 16px;
+        
+        @media (min-width: 576px) {
+            width: 50%;
+            margin: 24px auto;
+        }
+        
+        &:hover {
             background-color: var(--accent-orange-hover);
         }
     }
@@ -145,6 +181,10 @@ form{
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     z-index: 3000;
     text-align: center;
+
+    @media (min-width: 768px) {
+        width: 90%;
+    }
     & h2{
         color: var(--accent-orange);
     }
@@ -154,6 +194,16 @@ form{
         &:hover{
             color: var(--accent-orange-hover);
         }
+    }
+}
+.back{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    &:hover{
+        color: var(--accent-orange-hover);
     }
 }
 .blocks {
@@ -170,13 +220,16 @@ form{
 }
 
 .expandable-block {
-    width: 100%;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
     overflow: hidden;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease;
+    
+    @media (max-width: 767px) {
+        margin-bottom: 16px;
+        border-radius: 6px;
+    }
     
     &.has-error {
         border-color: #ff6b6b;
@@ -199,12 +252,25 @@ form{
 }
 
 .expandable-header {
+    padding: 14px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s;
+    
+    @media (min-width: 768px) {
+        padding: 16px 20px;
+    }
+    
+    h3 {
+        font-size: 16px;
+        margin: 0;
+        
+        @media (min-width: 768px) {
+            font-size: 18px;
+        }
+    }
 
     &:hover {
         background-color: #f9f9f9;
@@ -243,7 +309,11 @@ form{
 }
 
 .expandable-content {
-    padding: 20px;
+    padding: 16px;
+    
+    @media (min-width: 768px) {
+        padding: 20px;
+    }
     background: #fff;
 }
 
@@ -260,6 +330,12 @@ form{
     border-radius: 8px;
     padding: 16px;
     border: 1px solid #e0e0e0;
+    margin-bottom: 16px;
+    
+    @media (max-width: 767px) {
+        padding: 12px;
+        border-radius: 6px;
+    }
     position: relative;
 
     .session-header {
@@ -290,6 +366,10 @@ form{
         .form-group {
             flex: 1;
             margin-bottom: 0;
+        }
+
+        @media (max-width: 767px) {
+            flex-direction: column;
         }
     }
 
