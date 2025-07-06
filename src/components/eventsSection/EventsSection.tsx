@@ -26,7 +26,7 @@ const EventsSection: FC<EventsSectionProps> = ({ title, highlightEvents }) => {
             </div>
             <div className="event-details">
               <div className="event-location">{event.location}</div>
-              <div className="event-date">{event.startTime}</div>
+              <div className="event-date">{new Date(event.startTime).toLocaleString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" })}</div>
             </div>
           </button>
         ))}

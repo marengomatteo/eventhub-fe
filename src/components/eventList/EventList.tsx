@@ -63,7 +63,7 @@ const EventList: React.FC<Props> = ({ coordinates }) => {
           <li key={event.id}>
             <h3>{event.name}</h3>
             <p>{event.address}</p>
-            <p>Data: {event.date}</p>
+            <p>Data: {new Date(event.date).toLocaleString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" })}</p>
             <p>Distanza: {event.distance.toFixed(2)} km</p>
           </li>
         ))}

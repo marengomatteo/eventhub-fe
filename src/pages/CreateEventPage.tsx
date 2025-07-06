@@ -460,7 +460,7 @@ const CreateEventPage = () => {
     });
     const [files, setFiles] = useState<File[]>([]);
     const [filesError, setFilesError] = useState(false);
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const [error, setError] = useState<string>("");
     const [pageLoading, setPageLoading] = useState(false);
 
@@ -494,8 +494,9 @@ const CreateEventPage = () => {
             }
 
             const response = await api.post("", data);
+            debugger
             if (response.status === 200) {
-                const agendaID = response.data;
+                const agendaID = response.data.response;
                 await Promise.all(values.agenda.map(async (session: any) => {
                     await getBaseURL("agenda").post(`/${agendaID}/sessions`, {
                         "speaker": {
