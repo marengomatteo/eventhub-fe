@@ -310,11 +310,11 @@ form {
 
 .expandable-content {
     padding: 16px;
+    background: #fff;
     
     @media (min-width: 768px) {
         padding: 20px;
     }
-    background: #fff;
 }
 
 /* Session block styles */
@@ -331,12 +331,12 @@ form {
     padding: 16px;
     border: 1px solid #e0e0e0;
     margin-bottom: 16px;
+    position: relative;
     
     @media (max-width: 767px) {
         padding: 12px;
         border-radius: 6px;
     }
-    position: relative;
 
     .session-header {
         display: flex;
